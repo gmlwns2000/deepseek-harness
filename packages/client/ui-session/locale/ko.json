@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "세션 UI 연결",
+    "description": "세션 제어와 상태를 React UI 컴포넌트에 연결합니다."
+  }
+}

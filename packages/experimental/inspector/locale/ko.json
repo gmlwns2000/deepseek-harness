@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "NodeJS 인스펙터",
+    "description": "Ctrl/Cmd+Shift+. 키를 누르면 개발 및 디버깅용 Chrome DevTools가 하단 패널에 열립니다."
+  }
+}

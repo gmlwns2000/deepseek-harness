@@ -110,3 +110,16 @@ export const pt = {
   'crumbs.aria': 'Navegação de pastas',
   'suggestions.aria': 'Sugestões de gatilho',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'command': '명령',
+  'skill': '스킬',
+  'subagent': '서브에이전트',
+  'loading': '불러오는 중…',
+  'drill.aria': '폴더 탐색',
+  'drill.hint': '폴더 탐색',
+  'drill.key': 'Tab',
+  'crumbs.aria': '폴더 탐색 경로',
+  'suggestions.aria': '트리거 추천 항목',
+} satisfies Record<keyof typeof en, string>

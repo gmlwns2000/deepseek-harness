@@ -60,7 +60,7 @@ kind: "package-reference"
 | `src/client/stats-totals.ts` | 从宿主 stats 与 tokenUsage projection 生成全量合计 |
 | `src/client/stats-snapshot-builder.ts` | `stats` 视图目标的增量 builder |
 | `src/client/StatsView.tsx` | 表格、合计/事件行、时间条、步骤/工具/回答详情、复制按钮，以及提问图片标签、预览与看图器 |
-| `src/client/locales.ts` | 全部可见文案，覆盖 8 种 shipped 语言 |
+| `src/client/locales.ts` | 全部可见文案，覆盖 9 种 shipped 语言 |
 
 页脚的开关控制合计行、事件行与上下文口径，滚表格时页脚钉在输入框上方。「显示上下文增量」默认关闭；打开后每轮/每步显示相对同范围内上一个已测值的提示词大小变化，负增量（例如压缩后）用错误色显示。展开的步骤行在「触发」列显示该步开始时间戳（`MM-DD HH:MM:SS.mmm`，tooltip 为完整的 `YYYY-MM-DD HH:MM:SS.mmm`），以及距上一步至少一秒的空闲；亚秒级调度噪声不显示。带模型回答的步骤也可以展开：点击该行会打开详情行，通过共享的 Chat Markdown 原语渲染回答，最多保留 16,000 字符并提示截断。
 

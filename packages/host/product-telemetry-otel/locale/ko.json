@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "제품 사용 이벤트 전송",
+    "description": "OpenTelemetry를 통해 지정된 제품 사용 이벤트를 설정된 서비스로 전송합니다."
+  }
+}

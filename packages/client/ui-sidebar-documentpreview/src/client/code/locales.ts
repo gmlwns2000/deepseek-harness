@@ -63,3 +63,10 @@ export const pt = {
   copy: 'Copiar',
   copied: 'Copiado',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  title: '코드',
+  copy: '복사',
+  copied: '복사됨',
+} satisfies Record<keyof typeof en, string>

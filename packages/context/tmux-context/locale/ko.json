@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "tmux 컨텍스트",
+    "description": "필요할 때 단계마다 tmux pane과 window의 위치를 저장합니다."
+  }
+}

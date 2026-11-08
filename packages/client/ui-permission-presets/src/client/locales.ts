@@ -179,6 +179,22 @@ export const pt = {
   'confirm.enable': 'Ativar acesso total',
 } satisfies Record<keyof typeof en, string>
 
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'title': '권한',
+  'description': '새 세션의 기본 권한 모드를 선택하세요',
+  'loading': '불러오는 중',
+  'unavailable': '사용할 수 없음',
+  'preset.readOnly': '읽기 전용',
+  'preset.workspaceWrite': '워크스페이스 쓰기',
+  'preset.fullAccess': '전체 액세스',
+  'confirm.title': '전체 액세스를 활성화하시겠습니까?',
+  'confirm.description': '전체 액세스를 사용하면 새 세션에서 확인 단계가 줄어들고, 민감한 작업, 파일 변경, 외부 명령 등 더 많은 작업을 바로 수행할 수 있습니다. 이후 작업을 신뢰할 수 있을 때만 사용하세요.',
+  'confirm.acknowledge': '위험을 이해했으며 계속하겠습니다',
+  'confirm.cancel': '취소',
+  'confirm.enable': '전체 액세스 활성화',
+} satisfies Record<keyof typeof en, string>
+
 /** Japanese copy, checked against the English keys. */
 export const accessJa = {
   'mode': 'アクセスモード、現在: {name}',
@@ -303,4 +319,25 @@ export const accessPt = {
   'auto.confirm.description': 'Auto review é executado sem sandbox. Antes de cada chamada de ferramenta nativa e chamada interna PTC, o mesmo modelo do agente atual analisa se deve permitir isso; você aprova ou rejeita cada chamada negada. Este recurso é experimental, pode permitir ou negar ações falsamente e usa tokens adicionais.',
   'auto.confirm.acknowledge': 'Entendo esses riscos e quero continuar',
   'auto.confirm.enable': 'Ativar Auto review',
+} satisfies typeof accessEn
+
+/** Korean dictionary, checked against the English keys. */
+export const accessKo = {
+  'mode': '액세스 모드, 현재: {name}',
+  'close': '닫기',
+  'preset.readOnly': '읽기 전용',
+  'preset.workspaceWrite': '워크스페이스 쓰기',
+  'preset.fullAccess': '전체 액세스',
+  'confirm.title': '전체 액세스를 활성화하시겠습니까?',
+  'confirm.description': '전체 액세스를 사용하면 확인 단계가 줄어들고, 에이전트가 민감한 작업, 파일 변경, 외부 명령 등 더 많은 작업을 바로 수행할 수 있습니다. 현재 작업을 신뢰할 수 있을 때만 사용하세요.',
+  'confirm.acknowledge': '위험을 이해했으며 계속하겠습니다',
+  'confirm.cancel': '취소',
+  'confirm.enable': '전체 액세스 활성화',
+  'auto.label': 'Auto review',
+  'auto.badge': 'EXP',
+  'auto.description': '모든 네이티브 도구 호출과 PTC 내부 호출을 동일한 모델로 실험적으로 검토한 뒤 샌드박스 없이 실행합니다.',
+  'auto.confirm.title': 'Auto review(실험적)를 활성화하시겠습니까?',
+  'auto.confirm.description': 'Auto review는 샌드박스 없이 실행됩니다. 모든 네이티브 도구 호출과 PTC 내부 호출 전에 현재 에이전트와 동일한 모델이 허용 여부를 검토하며, 검토에서 거부된 호출은 사용자가 직접 승인하거나 거부합니다. 이 기능은 실험적이므로 작업을 잘못 허용하거나 거부할 수 있으며 추가 토큰을 사용합니다.',
+  'auto.confirm.acknowledge': '이러한 위험을 이해했으며 계속하겠습니다',
+  'auto.confirm.enable': 'Auto review 활성화',
 } satisfies typeof accessEn

@@ -69,3 +69,11 @@ export const pt = {
   'press.failed': 'O botão falhou: {message}',
   'press.stale': 'Esse botão pertencia a um desenho anterior; a banda se atualizou',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  band: 'Claude Code 모드',
+  pressing: '처리하는 중…',
+  'press.failed': '버튼 동작이 실패했습니다: {message}',
+  'press.stale': '이 버튼은 이전에 그려진 화면의 것입니다. 밴드를 새로 고쳤습니다',
+} satisfies Record<keyof typeof en, string>

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "OAR 서브에이전트",
+    "description": "설치된 코딩 에이전트에 OAR로 작업을 위임하며, Codex와 Claude Code 구성을 제공합니다."
+  }
+}

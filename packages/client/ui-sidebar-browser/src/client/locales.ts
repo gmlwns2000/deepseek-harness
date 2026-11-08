@@ -247,3 +247,33 @@ export const pt = {
   'load.failed.detail': 'Falha no carregamento da página ({code}): {description}',
   'address.unknown': 'A página navegada; esta operadora não consegue ler seu novo URL.',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'type.label': '브라우저',
+  'guide.title': '브라우저',
+  'guide.description': '웹 페이지를 탐색합니다',
+  'shortcut.noSession': '먼저 세션을 여세요',
+  'address.placeholder': 'HTTP(S) 주소 입력',
+  'address.changed': 'URL이 변경되었습니다',
+  back: '뒤로',
+  forward: '앞으로',
+  reload: '새로 고침',
+  go: '이동',
+  external: '시스템 브라우저에서 열기',
+  'sandbox.disable': '샌드박스 제한 해제',
+  'sandbox.enable': '샌드박스 제한 복원',
+  'sandbox.warning': '샌드박스 제한이 해제되었습니다. 페이지가 최상위 앱을 탐색하고 다운로드, 모달 대화 상자, 입력 잠금을 사용할 수 있습니다.',
+  start: '탐색을 시작하려면 HTTP(S) 주소를 입력하세요',
+  loading: '여는 중…',
+  'restore.previous': '이전에 연 페이지',
+  'restore.action': '페이지 복원',
+  'error.empty': '주소를 입력하세요.',
+  'error.invalid': '주소가 올바르지 않거나 너무 깁니다.',
+  'error.protocol': 'HTTP 및 HTTPS 주소만 지원합니다. 로컬 파일은 문서 미리 보기를 사용하세요.',
+  'error.credentials': '주소에 사용자 이름이나 비밀번호를 포함할 수 없습니다.',
+  'error.application-origin': '내장 브라우저에서는 DSH 애플리케이션 자체를 열 수 없습니다.',
+  'load.failed': '페이지를 불러오지 못했습니다. 새로 고치거나 시스템 브라우저에서 여세요.',
+  'load.failed.detail': '페이지를 불러오지 못했습니다 ({code}): {description}',
+  'address.unknown': '페이지가 이동했지만 현재 컨테이너에서는 새 URL을 읽을 수 없습니다.',
+} satisfies Record<keyof typeof en, string>

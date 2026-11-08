@@ -48,14 +48,23 @@ export const pt = {
   deniedWithReason: (reason: string): string => `Auto review negou esta chamada: ${reason}`,
 } satisfies typeof en
 
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  denied: 'Auto review가 이 호출을 거부했습니다.',
+  deniedWithReason: (reason: string): string => `Auto review가 이 호출을 거부했습니다: ${reason}`,
+} satisfies typeof en
+
 /**
  * Build all display translations without translating the reviewer's raw reason.
  * @param reason - optional reviewer explanation.
  * @returns text for the Client's localized-text resolver.
  */
-export function deniedDisplayReason(reason?: string): Record<'en' | 'zh' | 'ja' | 'es' | 'fr' | 'de' | 'ru' | 'pt', string> {
+export function deniedDisplayReason(reason?: string): Record<'en' | 'zh' | 'ja' | 'es' | 'fr' | 'de' | 'ru' | 'pt' | 'ko', string> {
   return reason === undefined
-    ? { en: en.denied, zh: zh.denied, ja: ja.denied, es: es.denied, fr: fr.denied, de: de.denied, ru: ru.denied, pt: pt.denied }
+    ? {
+      en: en.denied, zh: zh.denied, ja: ja.denied, es: es.denied, fr: fr.denied,
+      de: de.denied, ru: ru.denied, pt: pt.denied, ko: ko.denied,
+    }
     : {
       en: en.deniedWithReason(reason),
       zh: zh.deniedWithReason(reason),
@@ -65,5 +74,6 @@ export function deniedDisplayReason(reason?: string): Record<'en' | 'zh' | 'ja' 
       de: de.deniedWithReason(reason),
       ru: ru.deniedWithReason(reason),
       pt: pt.deniedWithReason(reason),
+      ko: ko.deniedWithReason(reason),
     }
 }

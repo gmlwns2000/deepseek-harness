@@ -201,3 +201,27 @@ export const pt = {
   'error.generic': 'Não foi possível salvar o feedback',
   'error.noteTooLarge': 'A descrição é muito longa; encurte-o e envie novamente',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'action.like': '좋은 응답',
+  'action.likeActive': '평가 취소',
+  'action.dislike': '좋지 않은 응답',
+  'action.dislikeActive': '평가 취소',
+  'dialog.title': '피드백 보내기',
+  'dialog.categories': '피드백 분류',
+  'dialog.detail': '피드백 세부 정보',
+  'dialog.hint': '개선에 도움이 되도록 자세한 내용을 입력하세요. 제출 내용에는 현재 대화 로그가 포함됩니다.',
+  'category.task-result': '작업 결과',
+  'category.instruction-following': '지시 이해 및 준수',
+  'category.product-interaction': '제품 기능 및 상호 작용',
+  'category.service-stability': '안정성 및 속도',
+  'category.resource-cost': '리소스 사용량 및 비용',
+  'category.security-privacy-permission': '보안, 개인 정보 보호 및 권한',
+  'category.other': '기타',
+  'toast.recorded': '피드백을 보내 주셔서 감사합니다',
+  'error.conflict': '이 피드백이 다른 곳에서 변경되어 최신 상태를 표시합니다',
+  'error.load': '피드백을 불러오지 못했습니다',
+  'error.generic': '피드백을 저장하지 못했습니다',
+  'error.noteTooLarge': '설명이 너무 깁니다. 줄인 후 다시 제출하세요',
+} satisfies Record<keyof typeof en, string>

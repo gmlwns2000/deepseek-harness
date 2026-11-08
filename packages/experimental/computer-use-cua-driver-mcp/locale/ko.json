@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "컴퓨터 조작(Cua Driver MCP)",
+    "description": "모델이 별도로 설치한 cua-driver 실행 파일을 통해 데스크톱을 조작할 수 있게 합니다."
+  }
+}

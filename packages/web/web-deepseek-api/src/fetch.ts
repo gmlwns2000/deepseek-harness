@@ -39,6 +39,7 @@ export class DeepSeekFetchApiProvider implements WebFetchProvider {
     de: 'Ruft öffentliche URLs auf DeepSeek-Servern ab und gibt Markdown zurück. Verwendet das DeepSeek-Konto der aktuellen Unterhaltung oder einen DeepSeek-API-Schlüssel, kann API-Kosten verursachen und erreicht keine Intranet- oder Loopback-Adressen.',
     ru: 'Загружает публичные URL на серверах DeepSeek и возвращает Markdown. Использует учётную запись DeepSeek текущего разговора или ключ API DeepSeek, возможна оплата API; адреса интрасети и loopback недоступны.',
     pt: 'Obtém URLs públicas nos servidores da DeepSeek e retorna Markdown. Usa a conta DeepSeek da conversa atual ou uma chave de API da DeepSeek, pode gerar cobranças de API e não alcança endereços da intranet nem de loopback.',
+    ko: 'DeepSeek 서버에서 공개 URL을 가져와 Markdown으로 반환합니다. 현재 대화의 DeepSeek 계정 또는 DeepSeek API 키를 사용하며, API 요금이 발생할 수 있고, 인트라넷 또는 루프백 주소에는 접근할 수 없습니다.',
   }
 
   /** @param resolveOptions - the options for the NEXT fetch, read once at each fetch's entry. */

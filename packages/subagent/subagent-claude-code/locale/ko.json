@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Claude Code 서브에이전트",
+    "description": "Claude Code 자체 인증과 설정을 사용해 작업 하나를 Claude Code에 위임합니다."
+  }
+}

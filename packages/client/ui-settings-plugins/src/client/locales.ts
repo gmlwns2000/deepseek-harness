@@ -74,3 +74,12 @@ export const pt = {
   tabs: 'Visualizações de plug-in',
   empty: 'Esta implantação não expõe visualizações de plug-ins.',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  nav: '내장 플러그인',
+  title: '내장 플러그인',
+  intro: '이 배포에 포함된 플러그인을 확인합니다.',
+  tabs: '플러그인 보기',
+  empty: '이 배포에는 플러그인 보기가 없습니다.',
+} satisfies Record<keyof typeof en, string>

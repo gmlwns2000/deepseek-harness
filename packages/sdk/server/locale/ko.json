@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "SDK 서버",
+    "description": "표준 입출력 기반 JSON-RPC로 별도 프로세스의 SDK 클라이언트에 서비스를 제공합니다."
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "GitHub 변경 요청",
+    "description": "호스트의 GitHub CLI를 통해 forge 레지스트리용 GitHub 변경 요청을 읽어 옵니다."
+  }
+}

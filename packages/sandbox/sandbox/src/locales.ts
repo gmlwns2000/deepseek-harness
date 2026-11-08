@@ -40,13 +40,18 @@ export const pt = {
   escalation: (mode: string, justification: string): string => `Permitir esta operação com permissões ${mode}: ${justification}`,
 } satisfies typeof en
 
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  escalation: (mode: string, justification: string): string => `이 작업에 ${mode} 권한을 허용합니다: ${justification}`,
+} satisfies typeof en
+
 /**
  * Build translations for the existing Client localized-text resolver.
  * @param mode - requested sandbox mode.
  * @param justification - raw model justification, preserved in every translation.
  * @returns localized approval text.
  */
-export function escalationDisplayReason(mode: string, justification: string): Record<'en' | 'zh' | 'ja' | 'es' | 'fr' | 'de' | 'ru' | 'pt', string> {
+export function escalationDisplayReason(mode: string, justification: string): Record<'en' | 'zh' | 'ja' | 'es' | 'fr' | 'de' | 'ru' | 'pt' | 'ko', string> {
   return {
     en: en.escalation(mode, justification),
     zh: zh.escalation(mode, justification),
@@ -56,5 +61,6 @@ export function escalationDisplayReason(mode: string, justification: string): Re
     de: de.escalation(mode, justification),
     ru: ru.escalation(mode, justification),
     pt: pt.escalation(mode, justification),
+    ko: ko.escalation(mode, justification),
   }
 }

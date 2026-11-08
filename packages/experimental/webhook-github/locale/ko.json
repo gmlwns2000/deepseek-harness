@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "GitHub Webhook",
+    "description": "서명된 GitHub HTTP Webhook을 검증하고 Webhook 서비스로 전달합니다."
+  }
+}

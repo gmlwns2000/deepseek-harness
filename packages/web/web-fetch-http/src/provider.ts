@@ -42,6 +42,7 @@ export class HttpFetchProvider implements WebFetchProvider {
     de: 'Ruft URLs direkt von diesem Rechner ab, ohne API-Schlüssel oder Kosten, auch Intranet- und Loopback-Adressen. Dekodiert nur Text, HTML, JSON und XML; kein JavaScript, keine Cookies, keine PDFs. Sie können auch DeepSeek Fetch API ausprobieren.',
     ru: 'Загружает URL напрямую с этого компьютера без ключа API и оплаты, включая адреса интрасети и loopback. Декодирует только текст, HTML, JSON и XML; без JavaScript, cookie и PDF. Можно также попробовать DeepSeek Fetch API.',
     pt: 'Obtém URLs diretamente desta máquina, sem chave de API nem cobranças, incluindo endereços da intranet e de loopback. Decodifica apenas texto, HTML, JSON e XML; sem JavaScript, cookies ou PDFs. Você também pode experimentar a DeepSeek Fetch API.',
+    ko: 'API 키나 요금 없이 이 컴퓨터에서 직접 URL을 가져오며, 인트라넷 및 루프백 주소에도 접근할 수 있습니다. 텍스트, HTML, JSON, XML만 디코딩하며 JavaScript, 쿠키, PDF는 지원하지 않습니다. DeepSeek Fetch API를 사용해 볼 수도 있습니다.',
   }
 
   /** @param limits - resolved transport and response limits. */

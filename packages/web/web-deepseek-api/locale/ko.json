@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "DeepSeek 웹 검색·가져오기 API",
+    "description": "DeepSeek Search API로 웹 페이지를 검색하고 Fetch API로 웹 페이지 본문을 가져옵니다."
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "JSON 파일 저장",
+    "description": "키-값 데이터를 로컬 JSON 파일로 저장합니다."
+  }
+}

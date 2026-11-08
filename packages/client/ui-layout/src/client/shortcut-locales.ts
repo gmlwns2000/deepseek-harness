@@ -22,3 +22,6 @@ export const ru = { toggle: 'Переключить левую боковую п
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = { toggle: 'Alternar barra lateral esquerda' } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = { toggle: '왼쪽 사이드바 펼치기/접기' } satisfies Record<keyof typeof en, string>

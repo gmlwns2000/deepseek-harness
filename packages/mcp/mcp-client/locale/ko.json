@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "MCP 클라이언트",
+    "description": "MCP 서버에 연결하고 해당 서버의 도구를 Harness에서 사용할 수 있게 합니다."
+  }
+}

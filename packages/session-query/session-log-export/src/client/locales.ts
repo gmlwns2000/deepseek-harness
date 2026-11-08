@@ -147,3 +147,21 @@ export const pt = {
   'dialog.close': 'Fechar',
   'dialog.commandFailed': 'Não foi possível iniciar a exportação da sessão.',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'menu.copyMarkdown': '세션을 Markdown으로 복사',
+  'menu.download': '세션 로그 다운로드',
+  'menu.feedback': '피드백',
+  'toast.copied': '세션을 Markdown으로 복사했습니다.',
+  'toast.preparationFailed': '복사할 세션을 읽지 못했습니다. 다시 시도하세요.',
+  'toast.clipboardFailed': '클립보드에 쓰지 못했습니다. 클립보드 권한을 확인한 후 다시 시도하세요.',
+  'dialog.session': '세션: {sessionId}',
+  'dialog.preparingTitle': '세션을 내보내는 중',
+  'dialog.preparingDescription': '선택한 세션과 하위 세션, 첨부 파일을 담은 ZIP 파일을 준비하는 중입니다.',
+  'dialog.successTitle': '세션 다운로드를 시작했습니다',
+  'dialog.successDescription': '브라우저에서 세션 ZIP 파일을 다운로드하는 중입니다.',
+  'dialog.errorTitle': '세션을 내보내지 못했습니다',
+  'dialog.close': '닫기',
+  'dialog.commandFailed': '세션 내보내기를 시작하지 못했습니다.',
+} satisfies Record<keyof typeof en, string>

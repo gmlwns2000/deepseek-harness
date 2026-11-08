@@ -1,6 +1,6 @@
 /** Locale bundles for the agent-preset hero chip, header label, and management section. */
 
-import { guideEn, guideJa, guideEs, guideFr, guideDe, guideRu, guidePt, guideZh, type PresetGuideKey } from './guide-locales.ts'
+import { guideEn, guideJa, guideEs, guideFr, guideDe, guideRu, guidePt, guideKo, guideZh, type PresetGuideKey } from './guide-locales.ts'
 
 /** Locale keys these surfaces render. */
 export type AgentPresetSettingsKey =
@@ -381,5 +381,50 @@ export const pt = {
   createPluginChecking: 'Verificando se o modo Criador está disponível',
   createPluginUnavailable: 'Temporariamente indisponível. Reabra este menu para tentar novamente',
   createPluginMissing: 'O modo criador não está incluído nesta configuração',
+
+} satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  ...guideKo,
+  builtInGroup: '기본 제공', customGroup: '사용자 지정',
+  sectionIntro: '에이전트의 도구와 작동 방식을 선택합니다. 일상적인 작업에는 표준 모드를, DSH에 기능을 추가하려면 크리에이터 모드를 사용하세요.',
+
+  seatHint: '새 작업에 사용할 에이전트 프리셋 선택',
+  headerHint: '이 작업을 시작할 때 선택한 에이전트 프리셋',
+  nav: '에이전트 프리셋',
+
+  setDefault: '새 작업 기본값으로 설정',
+  view: '구성 보기',
+
+  presetStandardName: '표준 모드',
+  presetStandardDescription:
+    '코드, 파일, 정보를 다룹니다. 필요에 따라 검색, 편집, 터미널 명령 등의 도구를 사용할 수 있어 대부분의 작업에 적합합니다.',
+  presetPtcName: 'PTC 모드',
+  presetPtcDescription:
+    '표준 모드의 모든 기능을 포함합니다. 도구를 일괄 호출한 뒤 결과를 필터링, 정리, 중복 제거, 집계 또는 요약하는 작업에 더 적합합니다.',
+  presetMinimalName: '최소 모드',
+  presetMinimalDescription:
+    '에이전트가 터미널과 이미지 읽기를 사용하며 컨텍스트 압축을 지원합니다. 에이전트의 기본 성능을 테스트하고 비교하는 데 유용합니다.',
+  presetCordisName: '크리에이터 모드',
+  presetCordisDescription:
+    '대화로 DSH를 사용자 지정합니다. 에이전트에게 기능이나 UI를 추가하는 플러그인을 작성하게 하거나, 도구와 프롬프트를 조합해 나만의 모드를 만들 수 있습니다.',
+
+  inUse: '새 작업 기본값',
+
+  noDescription: '설명이 없습니다.',
+  brokenBadge: '불러오지 못했습니다',
+
+  switchRefused: '{name}(으)로 전환하지 못했습니다: {reason}',
+  standardUnavailable: '표준 모드를 사용할 수 없습니다. 표준 모드를 복원하거나 사용 가능한 다른 모드를 선택하세요.',
+
+  close: '닫기',
+
+  creatorDraft: '에이전트의 도움을 받아 프리셋 만들기',
+  createPlugin: '에이전트로 플러그인 만들기',
+  createPluginDescription: '크리에이터 모드로 들어가 나만의 DSH 플러그인 만들기',
+  createPluginChecking: '크리에이터 모드를 사용할 수 있는지 확인하는 중',
+  createPluginUnavailable: '일시적으로 사용할 수 없습니다. 이 메뉴를 다시 열어 재시도하세요',
+  createPluginMissing: '이 구성에는 크리에이터 모드가 포함되어 있지 않습니다',
 
 } satisfies Record<keyof typeof en, string>

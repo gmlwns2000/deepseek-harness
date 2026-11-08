@@ -234,3 +234,32 @@ export const pt = {
   'fontFamily.placeholder': 'Padrão',
   'fontSize.more': 'Mais configurações de fonte',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'appearance.title': '모양',
+  'appearance.light': '라이트',
+  'appearance.dark': '다크',
+  'appearance.system': '시스템 설정',
+  'fontSize.text.title': '글꼴 크기',
+  'fontSize.text.description': '대화 내용에만 적용됩니다',
+  'fontSize.text.increase': '글꼴 크기 늘리기',
+  'fontSize.text.decrease': '글꼴 크기 줄이기',
+  'fontSize.code.title': '코드 글꼴 크기',
+  'fontSize.code.description': '코드 블록, 인라인 코드, 도구 출력에 사용됩니다',
+  'fontSize.code.increase': '코드 글꼴 크기 늘리기',
+  'fontSize.code.decrease': '코드 글꼴 크기 줄이기',
+  'fontSize.terminal.title': '터미널 글꼴 크기',
+  'fontSize.terminal.description': '사이드바 터미널에 사용됩니다',
+  'fontSize.terminal.increase': '터미널 글꼴 크기 늘리기',
+  'fontSize.terminal.decrease': '터미널 글꼴 크기 줄이기',
+  'fontSize.unit': 'px',
+  'fontFamily.text.title': '본문 글꼴',
+  'fontFamily.text.description': '인터페이스와 대화 본문에 사용됩니다. 여러 글꼴은 쉼표로 구분하고, 기본 글꼴을 사용하려면 비워 두세요',
+  'fontFamily.code.title': '코드 글꼴',
+  'fontFamily.code.description': '코드 블록, 인라인 코드, 도구 출력에 사용됩니다. 여러 글꼴은 쉼표로 구분하고, 기본 글꼴을 사용하려면 비워 두세요',
+  'fontFamily.terminal.title': '터미널 글꼴',
+  'fontFamily.terminal.description': '사이드바 터미널에 사용됩니다. 여러 글꼴은 쉼표로 구분하고, 기본 글꼴을 사용하려면 비워 두세요',
+  'fontFamily.placeholder': '기본값',
+  'fontSize.more': '추가 글꼴 설정',
+} satisfies Record<keyof typeof en, string>

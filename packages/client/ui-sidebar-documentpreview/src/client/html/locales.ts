@@ -71,3 +71,11 @@ export const pt = {
   loading: 'Renderizando documento...',
   failed: 'Este documento HTML não pôde ser visualizado.',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  title: 'HTML',
+  frame: 'HTML 문서 미리 보기',
+  loading: '문서를 렌더링하는 중...',
+  failed: '이 HTML 문서를 미리 보지 못했습니다.',
+} satisfies Record<keyof typeof en, string>

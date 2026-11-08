@@ -216,3 +216,29 @@ export const pt = {
   'error.unavailable': 'Falha na leitura: {message}',
   retry: 'Tentar novamente',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  loading: '문서를 렌더링하는 중...',
+  loadMore: '더 불러오기',
+  changed: '파일이 변경되었습니다. 이전 내용을 표시하고 있습니다.',
+  reloadNow: '새로 고침',
+  reload: '파일 다시 읽기',
+  autoRefresh: '자동 새로 고침',
+  'autoRefresh.enable': '자동 새로 고침 사용',
+  'autoRefresh.disable': '자동 새로 고침 사용 안 함',
+  'wrap.enable': '줄 바꿈 켜기',
+  'wrap.disable': '줄 바꿈 끄기',
+  'wrap.aria': '줄 바꿈',
+  openWith: '다음으로 열기',
+  'viewer.text': '일반 텍스트',
+  resourceUnavailable: '파일 리소스 서비스를 사용할 수 없습니다.',
+  rendererUnavailable: '{name} 미리 보기를 사용할 수 없습니다.',
+  unsupportedFile: '이 파일 형식은 아직 미리 볼 수 없습니다.',
+  'error.notFound': '파일을 찾을 수 없습니다. 이동되었거나 삭제되었을 수 있습니다.',
+  'error.tooLarge': '이 페이지는 {limit} 제한을 초과하여 읽을 수 없습니다.',
+  'error.notText': '이 파일 형식은 아직 미리 볼 수 없습니다.',
+  'error.notRegularFile': '일반 파일이 아니므로 표시할 내용이 없습니다.',
+  'error.unavailable': '읽지 못했습니다: {message}',
+  retry: '다시 시도',
+} satisfies Record<keyof typeof en, string>

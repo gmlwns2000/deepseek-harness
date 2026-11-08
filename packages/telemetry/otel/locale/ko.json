@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "OpenTelemetry 전송 서비스",
+    "description": "제품 이벤트와 세션 로그를 위한 독립적인 데이터 전송 채널을 제공합니다."
+  }
+}

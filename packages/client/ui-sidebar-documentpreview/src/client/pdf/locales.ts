@@ -1,4 +1,4 @@
-import { zoomEn, zoomJa, zoomEs, zoomFr, zoomDe, zoomRu, zoomPt, zoomZh } from '../zoom/locales.ts'
+import { zoomEn, zoomJa, zoomEs, zoomFr, zoomDe, zoomRu, zoomPt, zoomKo, zoomZh } from '../zoom/locales.ts'
 
 /** Copy owned by the PDF renderer. */
 export const zh = {
@@ -120,4 +120,18 @@ export const pt = {
   workerFailed: 'O processo de renderização do PDF não pôde continuar. Por favor, tente novamente.',
   unsupported: 'A visualização do PDF requer o conteúdo completo do arquivo.',
   retry: 'Tentar novamente',
+} satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  ...zoomKo,
+  title: 'PDF',
+  pageImage: 'PDF {page}페이지',
+  loading: '문서를 렌더링하는 중...',
+  rendering: '페이지를 렌더링하는 중…',
+  failed: 'PDF를 표시할 수 없습니다: {message}',
+  password: '이 PDF는 비밀번호가 필요합니다. 비밀번호로 보호된 파일은 미리 볼 수 없습니다.',
+  workerFailed: 'PDF 렌더링 프로세스를 계속할 수 없습니다. 다시 시도하세요.',
+  unsupported: 'PDF 미리 보기에는 전체 파일 내용이 필요합니다.',
+  retry: '다시 시도',
 } satisfies Record<keyof typeof en, string>

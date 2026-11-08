@@ -45,3 +45,8 @@ export const ru = {
 export const pt = {
   'quote.add': 'Citação de texto',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'quote.add': '텍스트 인용',
+} satisfies Record<keyof typeof en, string>

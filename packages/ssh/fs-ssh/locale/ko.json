@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "SSH 파일 시스템",
+    "description": "공유 POSIX SSH 헬퍼를 통해 원격 파일에 접근합니다."
+  }
+}

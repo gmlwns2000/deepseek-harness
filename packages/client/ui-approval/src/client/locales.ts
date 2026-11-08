@@ -90,3 +90,14 @@ export const pt = {
   allowOnce: 'Permitir uma vez',
   allowAlways: 'Sempre permitir',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  waiting: '승인 대기 중',
+  'detail.aria': '승인 세부 정보',
+  escalation: '도구 {toolName}에서 권한 상승 실행을 요청합니다',
+  reject: '거부',
+  allow: '허용',
+  allowOnce: '한 번 허용',
+  allowAlways: '항상 허용',
+} satisfies Record<keyof typeof en, string>

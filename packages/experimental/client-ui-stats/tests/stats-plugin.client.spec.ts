@@ -19,7 +19,7 @@ import { SlotRegistry } from '@deepseek-ai/dsh-client-ui-renderer/client'
 import { makeTranslate } from '@deepseek-ai/dsh-client-test-runtime'
 import { resolveSlotLabel } from '@deepseek-ai/dsh-client-ui-slots'
 import type { StoredEntry } from '@deepseek-ai/dsh-client-ui-slots'
-import { de, en, es, fr, ja, NS, pt, ru, zh } from '../src/client/locales.ts'
+import { de, en, es, fr, ja, ko, NS, pt, ru, zh } from '../src/client/locales.ts'
 import type {
   StatsCall, StatsContribution, StatsSnapshot, StatsStepMetrics, StatsStepState, StatsViewNode,
 } from '../src/client/stats-contract.ts'
@@ -389,7 +389,7 @@ function locatedUpdate(event: SessionEventLike, location: ConversationLocation):
 describe('browser plugin registration', () => {
   it('registers the performance tab, dictionaries, Definitions, and view target', async () => {
     const bench = await mountPlugin()
-    expect(bench.localeRegister).toHaveBeenCalledWith(NS, { zh, en, ja, de, es, fr, pt, ru })
+    expect(bench.localeRegister).toHaveBeenCalledWith(NS, { zh, en, ja, de, es, fr, pt, ru, ko })
     expect(bench.events.map(definition => definition.kind)).toEqual([
       'stats-step', 'stats-prompt', 'stats-turn-end', 'stats-code-mode', 'stats-compaction', 'stats-event',
     ])

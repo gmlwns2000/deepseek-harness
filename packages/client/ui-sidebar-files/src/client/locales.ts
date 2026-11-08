@@ -220,3 +220,28 @@ export const pt = {
   'error.notDirectory': 'Isso não é um diretório.',
   'error.unavailable': 'Falha na leitura: {message}',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'shortcut.noSession': '먼저 세션을 선택하세요',
+  'type.label': '파일',
+  'guide.title': '워크스페이스 파일',
+  'guide.description': '이 세션의 워크스페이스에 있는 파일을 탐색합니다',
+  loading: '읽는 중…',
+  empty: '빈 디렉터리',
+  truncated: '항목이 너무 많아 일부만 표시합니다.',
+  noWorkspace: '이 세션에는 워크스페이스 디렉터리가 없습니다.',
+  reload: '새로 고침',
+  autoRefresh: '자동 새로 고침',
+  'autoRefresh.enable': '자동 새로 고침 사용',
+  'autoRefresh.disable': '자동 새로 고침 사용 안 함',
+  'entry.other': '파일이나 디렉터리가 아니므로 열 수 없습니다.',
+  'entry.noViewer': '이 파일을 열 수 있는 뷰어가 없습니다.',
+  'navigator.show': '파일 트리 표시',
+  'navigator.hide': '파일 트리 숨기기',
+  'navigator.resize': '파일 트리 크기 조정',
+  'error.notFound': '해당 디렉터리가 없습니다. 이동되었거나 삭제되었을 수 있습니다.',
+  'error.outsideWorkspace': '해당 디렉터리는 워크스페이스 밖에 있으므로 사이드바에서 읽지 않습니다.',
+  'error.notDirectory': '디렉터리가 아닙니다.',
+  'error.unavailable': '읽지 못했습니다: {message}',
+} satisfies Record<keyof typeof en, string>

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "워크스페이스 종속성",
+    "description": "번들된 Python, Node.js, pnpm 런타임의 절대 경로를 제공합니다."
+  }
+}

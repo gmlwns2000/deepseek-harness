@@ -90,7 +90,17 @@ const pt = {
   screenRecording: 'Gravação de tela',
 } satisfies typeof en
 
-const dictionaries = new Map<string, typeof en>(Object.entries({ en, zh, ja, es, fr, de, ru, pt }))
+const ko = {
+  instruction: '{permission} 권한을 허용하려면 {application}을(를) 위 목록으로 드래그하세요',
+  backLabel: '뒤로',
+  finderLabel: 'Finder에서 보기',
+  unavailableMessage: '애플리케이션을 사용할 수 없습니다. Computer Use를 다시 활성화한 후 다시 시도하세요.',
+  settingsMessage: '시스템 설정 > 개인정보 보호 및 보안 > {permission} 항목을 직접 여세요.',
+  accessibility: '손쉬운 사용',
+  screenRecording: '화면 및 시스템 오디오 녹음',
+} satisfies typeof en
+
+const dictionaries = new Map<string, typeof en>(Object.entries({ en, zh, ja, es, fr, de, ru, pt, ko }))
 
 /**
  * Resolve native permission copy from the Client language; unsupported languages use English.

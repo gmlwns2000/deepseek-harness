@@ -177,3 +177,21 @@ export const pt = {
   saveFailed: 'A implantação não aceitou esses valores; eles foram deixados para você corrigir.', save: 'Salvar', saving: 'Salvando…',
   copy: 'Copiar', copied: 'Copiado', codeTitle: 'Bloco de código', wrap: 'Quebrar linhas', unwrap: 'Desembrulhar linhas', footnotes: 'Notas de rodapé',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  provider: '번역 서비스', google: 'Google', bing: 'Bing',
+  deepseekAccount: 'DeepSeek Flash — 계정 (유료)', deepseekOfficial: 'DeepSeek Flash — 공식 API (유료)',
+  providerUnavailableOption: '{provider} — 사용할 수 없음',
+  providerUnavailable: '이 제공자를 사용할 수 없습니다. DeepSeek 계정 또는 공식 API 제공자를 구성하거나 사용 가능한 서비스를 선택하세요.',
+  paidNotice: '캐시되지 않은 조각마다 선택한 계정 또는 공식 API 자격 증명으로 유료 DeepSeek Flash 요청이 하나씩 전송됩니다. 추론을 다시 펼치면 저장된 결과를 재사용하지만, 제공자, 언어, 원문 또는 요청 설정을 변경하면 새 유료 요청이 전송될 수 있습니다.',
+  anonymousNotice: 'Bing과 Google은 번역용 로그인이나 API 키가 필요하지 않습니다. 단, 익명 엔드포인트는 요청을 거부하거나 제한할 수 있습니다.', targetLanguage: '대상 언어',
+  targetLanguageHint: 'auto는 UI 언어를 따릅니다. zh, en, ja 같은 언어 코드도 사용할 수 있습니다.',
+  privacy: '펼친 추론 내용은 선택한 서비스로 전송됩니다. 비공개 코드나 대화 세부 정보가 포함될 수 있습니다.',
+  translation: '번역 보기', original: '원문 보기', retry: '다시 시도', failed: '번역하지 못했습니다. 원문을 표시합니다.',
+  translating: '추론을 번역하는 중', invalidProvider: '번역 서비스를 선택하세요.', invalidLanguage: 'auto 또는 zh, en, ja 같은 언어 코드를 입력하세요.',
+  overridden: '재정의됨', reset: '기본값으로 재설정',
+  unavailable: '번역 환경설정을 사용할 수 없습니다.', readOnly: '이 배포에서는 설정이 읽기 전용으로 저장됩니다.',
+  saveFailed: '배포에서 이 값을 받아들이지 않았습니다. 수정할 수 있도록 입력한 값을 그대로 두었습니다.', save: '저장', saving: '저장하는 중…',
+  copy: '복사', copied: '복사됨', codeTitle: '코드 블록', wrap: '줄 바꿈', unwrap: '줄 바꿈 안 함', footnotes: '각주',
+} satisfies Record<keyof typeof en, string>

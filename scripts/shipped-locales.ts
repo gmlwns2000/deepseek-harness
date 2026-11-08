@@ -1,5 +1,5 @@
 /** Languages whose UI dictionaries and package metadata ship with Harness. */
-export const SHIPPED_LOCALE_IDS = ['en', 'zh', 'ja', 'es', 'fr', 'de', 'ru', 'pt'] as const
+export const SHIPPED_LOCALE_IDS = ['en', 'zh', 'ja', 'es', 'fr', 'de', 'ru', 'pt', 'ko'] as const
 
 /** Locale id required by repository translation checks. */
 export type ShippedLocaleId = typeof SHIPPED_LOCALE_IDS[number]

@@ -10,7 +10,7 @@ import { PreparationCard, VoicePreparation } from '../src/client/PreparationCard
 import type { VoiceInputProps } from '../src/client/VoiceInput.tsx'
 import type { SpeechReadiness } from '../src/client/readiness.ts'
 import { Recording } from '../src/client/audio.ts'
-import { zh, en, ja, es, fr, de, ru, pt } from '../src/client/locales.ts'
+import { zh, en, ja, es, fr, de, ru, pt, ko } from '../src/client/locales.ts'
 
 afterEach(() => { cleanup(); vi.useRealTimers() })
 const id = 'local' as SpeechProviderId, t = makeTranslate(zh, commonZh)
@@ -215,7 +215,7 @@ it('locks source changes while a preparation request is pending and hides them d
 })
 
 it('gives each speech recognition language a distinct localized name', () => {
-  for (const dictionary of [zh, en, ja, es, fr, de, ru, pt]) {
+  for (const dictionary of [zh, en, ja, es, fr, de, ru, pt, ko]) {
     const names = [
       dictionary.zh, dictionary.en, dictionary.yue, dictionary.ja, dictionary.es,
       dictionary.fr, dictionary.de, dictionary.ru, dictionary.pt, dictionary.ko,

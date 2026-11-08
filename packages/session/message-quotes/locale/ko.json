@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "메시지 인용",
+    "description": "선택한 텍스트를 인용하여 Markdown 인용 블록으로 표시합니다."
+  }
+}

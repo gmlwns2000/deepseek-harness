@@ -152,3 +152,22 @@ export const pt = {
   busy: 'A visualização do Office está ocupada. Tente novamente em breve.',
   changed: 'O arquivo foi alterado durante a leitura. Reabra a visualização.',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  title: 'Office 문서',
+  loading: '문서를 렌더링하는 중...',
+  retry: '다시 시도',
+  viewMissingFonts: '누락된 글꼴 {count}개. 클릭하여 확인하세요.',
+  missingFontsTitle: '누락된 글꼴',
+  missingFontsDescription: '이 미리 보기에서는 다음 글꼴을 사용할 수 없습니다. 텍스트와 레이아웃이 원본 문서와 다를 수 있습니다.',
+  missingFontsCount: '글꼴 {count}개',
+  closeDetails: '글꼴 세부 정보 닫기',
+  unavailable: 'Office 미리 보기를 사용할 수 없습니다. DeepSeek Harness를 실행하는 컴퓨터에서 문서 미리 보기 서비스를 활성화하세요.',
+  invalid: '이 Office 파일은 미리 볼 수 없습니다. 파일이 손상되었거나, 비밀번호로 보호되어 있거나, 확장자가 잘못되었을 수 있습니다.',
+  tooLarge: 'Office 파일 또는 변환된 PDF가 미리 보기 크기 제한을 초과합니다. 파일 크기를 줄이거나 미리 보기 구성을 조정하세요.',
+  failed: 'Office 변환에서 사용할 수 있는 PDF를 만들지 못했습니다. 파일을 확인한 후 다시 시도하세요.',
+  timeout: 'Office 변환 시간이 초과되었습니다. 다시 시도하세요.',
+  busy: 'Office 미리 보기 작업이 많습니다. 잠시 후 다시 시도하세요.',
+  changed: '읽는 동안 파일이 변경되었습니다. 미리 보기를 다시 여세요.',
+} satisfies Record<keyof typeof en, string>

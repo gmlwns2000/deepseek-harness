@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "헤드리스 프로필",
+    "description": "Host, HTTP, 브라우저 계층 없이 dsh-base 위에서 코어 Agent/Session 실행기로 단일 작업을 직접 실행합니다."
+  }
+}

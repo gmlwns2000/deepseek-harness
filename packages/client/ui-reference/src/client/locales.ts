@@ -172,3 +172,22 @@ export const pt = {
   'time.months': '{n} mês',
   'time.years': '{n}s',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'section.files': '파일 및 폴더',
+  'section.subagents': '서브에이전트',
+  'section.sessions': '세션',
+  'candidate.noCwd': '(작업 디렉터리 없음)',
+  'crumb.root': '워크스페이스',
+  'fileOpen.title': '파일을 열지 못했습니다',
+  'fileOpen.failed': '“{path}”을(를) 열지 못했습니다. 다시 시도하거나 이 메시지를 닫으세요.',
+  'fileOpen.close': '닫기',
+  'fileOpen.retry': '다시 시도',
+  'time.now': '방금',
+  'time.minutes': '{n}분',
+  'time.hours': '{n}시간',
+  'time.days': '{n}일',
+  'time.months': '{n}개월',
+  'time.years': '{n}년',
+} satisfies Record<keyof typeof en, string>

@@ -162,3 +162,23 @@ export const pt = {
   'chip.on.title': 'Modo de planejamento ativado – clique para desligar (/plan off)',
   'chip.exitFailed': 'Falha ao sair do modo de plano',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'chip.label': '계획',
+  'preview.title': '계획',
+  'preview.document': '계획 · Markdown',
+  'preview.action': '열기',
+  'preview.open': '사이드바에서 계획 열기',
+  'preview.full': '계획 전체 보기',
+  'preview.openNamed': '계획 열기: {title}',
+  'preview.loading': '계획을 불러오는 중…',
+  'preview.failed': '계획을 불러오지 못했습니다',
+  'preview.invalidAddress': '계획 주소가 잘못되었습니다',
+  'preview.notFound': '이 계획을 찾을 수 없습니다',
+  'preview.unavailable': '계획 미리 보기를 사용할 수 없습니다',
+  'preview.expired': '이 임시 계획 미리 보기가 만료되었습니다. 대기 중인 검토 카드에서 다시 여세요.',
+  'chip.on.aria': '계획 모드 켜짐, 눌러서 끄기',
+  'chip.on.title': '계획 모드 켜짐 — 클릭하여 끄기 (/plan off)',
+  'chip.exitFailed': '계획 모드를 종료하지 못했습니다',
+} satisfies Record<keyof typeof en, string>

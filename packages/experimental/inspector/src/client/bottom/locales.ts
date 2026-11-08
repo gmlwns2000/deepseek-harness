@@ -76,3 +76,12 @@ export const pt = {
   resize: 'Redimensionar painel do inspetor NodeJS',
   frameTitle: 'NodeJS inspetor',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  title: 'NodeJS 인스펙터',
+  toggle: 'NodeJS 인스펙터 표시 전환',
+  close: '접기',
+  resize: 'NodeJS 인스펙터 패널 크기 조정',
+  frameTitle: 'NodeJS 인스펙터',
+} satisfies Record<keyof typeof en, string>

@@ -71,3 +71,11 @@ export const pt = {
   'code.copied': 'Copiado',
   'footnotes': 'Notas de rodapé',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'viewer.label': 'Markdown',
+  'code.copy': '복사',
+  'code.copied': '복사됨',
+  'footnotes': '각주',
+} satisfies Record<keyof typeof en, string>

@@ -1,0 +1,16 @@
+# Bilingual-pair consistency record for guide.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write docs/upgrade-guide/v0.2.2-rc.1/built-in-korean/guide.md
+/:
+  en: 30a8b4b15a57c0f2
+  zh: 594479efb2ecb70f
+/built-in-korean-replaces-korean-language-packs:
+  en: 40ff5da130911789
+  zh: 001121858c9c3a5b
+/built-in-korean-replaces-korean-language-packs/change:
+  en: 8997e5af918523a8
+  zh: 32c82d45d58605e0
+/built-in-korean-replaces-korean-language-packs/migration:
+  en: e2a3a68edd871826
+  zh: c943889444e9bc67

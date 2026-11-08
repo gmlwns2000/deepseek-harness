@@ -57,7 +57,7 @@ Subagent 目录负责共享面板的滚动、悬停、键盘和关闭交互。�
 |---|---|
 | [`src/client/mount.ts`](src/client/mount.ts) | 语言字典、目录任务区和模型菜单注册 |
 | [`src/client/TeamBoard.tsx`](src/client/TeamBoard.tsx) | 从投影派生的任务区 |
-| [`src/client/locales.ts`](src/client/locales.ts) | 八种语言的面板与命令文案 |
+| [`src/client/locales.ts`](src/client/locales.ts) | 九种语言的面板与命令文案 |
 | [`src/index.ts`](src/index.ts) | 不执行行为的 Host entry |
 
 </details>

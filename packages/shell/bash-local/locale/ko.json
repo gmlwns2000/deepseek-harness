@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "로컬 Bash 실행",
+    "description": "로컬 하위 프로세스에서 Bash 명령을 실행합니다."
+  }
+}

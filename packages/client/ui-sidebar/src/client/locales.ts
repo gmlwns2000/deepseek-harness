@@ -114,3 +114,17 @@ export const pt = {
   'panels.more': 'Mais',
   'version.copied': 'Versão copiada',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'panels.unpinTooltip': '왼쪽 사이드바에서 고정 해제',
+  'panels.unpin': '사이드바에서 {name} 고정 해제',
+  'session.new': '새 세션',
+  'session.new.label': '새 세션',
+  'toggle.open': '사이드바 열기',
+  'toggle.collapse': '사이드바 접기',
+  'panels.label': '전역 패널',
+  'navigation.label': '탐색',
+  'panels.more': '더 보기',
+  'version.copied': '버전을 복사했습니다',
+} satisfies Record<keyof typeof en, string>

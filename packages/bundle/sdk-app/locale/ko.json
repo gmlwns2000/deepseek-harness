@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "SDK 프로필",
+    "description": "dsh-base 위에서 표준 입출력 기반 JSON-RPC를 제공하고 프로세스 수명 주기를 관리합니다."
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "SQLite 스토리지",
+    "description": "Harness 키-값 데이터를 SQLite에 저장합니다."
+  }
+}

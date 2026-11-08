@@ -161,3 +161,21 @@ export const pt = {
   saveFailed: 'A implantação não aceitou esses valores; eles foram deixados para você corrigir.',
   invalidNumber: 'Insira um número ou deixe em branco para usar o padrão.',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  title: '셸',
+  description: '각 명령의 최대 실행 시간과 최대 출력량을 제한합니다.',
+  timeoutMs: '명령 시간 제한(ms)',
+  timeoutMsHint: '명령 하나가 종료되기 전까지 실행될 수 있는 시간입니다.',
+  maxOutputBytes: '스트림별 출력 상한(바이트)',
+  maxOutputBytesHint: '이 상한을 넘는 출력은 버려지지 않고 임시 파일에 저장됩니다.',
+  overridden: '재정의됨',
+  reset: '기본값으로 재설정',
+  readOnly: '이 배포에서는 설정이 읽기 전용으로 저장됩니다.',
+  unavailable: '이 플러그인이 로드되지 않아 지금은 구성할 수 없습니다.',
+  save: '저장',
+  saving: '저장하는 중…',
+  saveFailed: '배포에서 이 값을 받아들이지 않았습니다. 수정할 수 있도록 입력한 값을 그대로 두었습니다.',
+  invalidNumber: '숫자를 입력하거나, 기본값을 사용하려면 비워 두세요.',
+} satisfies Record<keyof typeof en, string>

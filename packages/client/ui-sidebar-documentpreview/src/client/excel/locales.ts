@@ -110,3 +110,15 @@ export const pt = {
   charts: 'gráficos', images: 'imagens', shapes: 'formas', conditionalFormatting: 'formatação condicional', featureSeparator: ', ',
   retry: 'Tentar novamente',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  title: '스프레드시트', language: 'en', loading: '문서를 렌더링하는 중...',
+  invalid: '이 스프레드시트를 열지 못했습니다. 파일 형식, 내용 또는 비밀번호 보호 여부를 확인하세요.',
+  tooLarge: '이 통합 문서는 미리 보기 크기 제한을 초과합니다.', timeout: '이 통합 문서를 여는 동안 시간이 초과되었습니다. 더 작은 파일로 시도하세요.',
+  encoding: '이 텍스트 인코딩을 읽지 못했습니다. 파일을 UTF-8 또는 BOM이 있는 UTF-16으로 저장한 후 다시 시도하세요.',
+  formulaWarning: '이 통합 문서에는 수식이 포함되어 있습니다. 표시된 결과가 누락되었거나 정확하지 않을 수 있습니다.',
+  unsupportedNotice: '이 미리 보기는 이 통합 문서의 {features}(을)를 지원하지 않습니다. 전체 기능을 사용하려면 시스템 애플리케이션에서 여세요.',
+  charts: '차트', images: '이미지', shapes: '도형', conditionalFormatting: '조건부 서식', featureSeparator: ', ',
+  retry: '다시 시도',
+} satisfies Record<keyof typeof en, string>

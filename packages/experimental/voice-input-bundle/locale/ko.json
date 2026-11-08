@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "음성 입력",
+    "description": "SenseVoice로 로컬에서 녹음을 텍스트로 변환합니다. 처음 사용할 때 의존성을 설치해야 합니다.",
+    "detail": "docs/DETAIL.md"
+  }
+}

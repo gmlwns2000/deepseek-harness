@@ -61,3 +61,11 @@ export const pt = {
   saved: 'Preferência salva',
   failed: 'Não foi possível salvar a preferência',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  title: '공식 모델 API 사용 시 세션 로그 업로드',
+  description: 'DeepSeek 모델과 제품 개선에 도움을 주세요.',
+  saved: '환경설정을 저장했습니다',
+  failed: '환경설정을 저장하지 못했습니다',
+} satisfies Record<keyof typeof en, string>

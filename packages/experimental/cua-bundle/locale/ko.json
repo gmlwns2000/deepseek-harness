@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Computer Use",
+    "description": "현재는 macOS만 지원하며 Windows 지원은 개발 중입니다. 기존 및 새 PTC 세션에 Computer Use 기능을 불러옵니다. 사용하려면 PTC 모드로 전환하고 손쉬운 사용 및 화면 기록 권한을 허용하세요.",
+    "detail": "docs/DETAIL.md"
+  }
+}

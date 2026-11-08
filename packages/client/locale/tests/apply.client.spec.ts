@@ -112,6 +112,23 @@ describe('locale apply', () => {
     }
   })
 
+  it('opens in shipped Korean for a Korean OS language without writing a preference', async () => {
+    const b = await bench()
+    const onChange = vi.fn()
+    vi.stubGlobal('__DSH_LOCALE__', { read: async () => ({ languages: ['ko-KR', 'en-US'], preference: null }), onChange })
+    try {
+      await b.ctx.plugin({ inject: [...inject], apply }).await()
+      const locale = b.ctx.get('locale') as LocaleRuntime
+      expect(locale.getSnapshot().active).toBe('ko')
+      expect(locale.bind('common')('cancel')).toBe('취소')
+      expect(locale.bind(SETTINGS_NS)('language.title')).toBe('언어')
+      expect(onChange).toHaveBeenLastCalledWith('ko')
+      expect(b.mutate).not.toHaveBeenCalled()
+    } finally {
+      await b.ctx.fiber.dispose()
+    }
+  })
+
   // These are wiring specs, not default-language specs. A fresh LocaleRuntime
   // with no jsdom `window` skips browser detection and opens on FALLBACK_LOCALE
   // (en); each test that reads localized copy stages its locale explicitly via
@@ -191,11 +208,12 @@ describe('locale apply', () => {
       { id: 'de', label: 'Deutsch' },
       { id: 'ru', label: 'Русский' },
       { id: 'pt', label: 'Português' },
+      { id: 'ko', label: '한국어' },
       { id: 'it', label: 'Italiano' },
     ])
 
     await languagePack.dispose()
-    expect(instance.getSnapshot().options.map(option => option.id)).toEqual(['zh', 'en', 'ja', 'es', 'fr', 'de', 'ru', 'pt'])
+    expect(instance.getSnapshot().options.map(option => option.id)).toEqual(['zh', 'en', 'ja', 'es', 'fr', 'de', 'ru', 'pt', 'ko'])
   })
 
   it.each([
@@ -205,6 +223,7 @@ describe('locale apply', () => {
     ['de', 'Deutsch', 'Sprache', 'Abbrechen'],
     ['ru', 'Русский', 'Язык', 'Отмена'],
     ['pt', 'Português', 'Idioma', 'Cancelar'],
+    ['ko', '한국어', '언어', '취소'],
   ])('restores %s from the Host and releases its language and dictionaries on unload', async (id, label, languageTitle, cancel) => {
     const b = await bench(id)
     onTestFinished(() => b.ctx.fiber.dispose())

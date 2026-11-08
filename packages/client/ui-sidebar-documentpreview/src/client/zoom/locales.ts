@@ -80,3 +80,13 @@ export const zoomPt = {
   zoomFitWidth: 'Ajustar largura',
   zoomValue: '{percent}%',
 } satisfies typeof zoomEn
+
+/** Korean dictionary, checked against the English keys. */
+export const zoomKo = {
+  zoomControls: '확대/축소 컨트롤',
+  zoomMenu: '확대/축소 비율 선택',
+  zoomOut: '축소',
+  zoomIn: '확대',
+  zoomFitWidth: '너비에 맞추기',
+  zoomValue: '{percent}%',
+} satisfies typeof zoomEn

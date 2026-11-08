@@ -213,6 +213,7 @@ export class DeepSeekSearchProvider implements WebSearchProvider {
     de: 'Führt die Websuche serverseitig innerhalb eines vollständigen Messages-Modellaufrufs aus, was bei jeder Suche Modelllatenz und Tokenverbrauch verursacht. Erfordert ein DeepSeek-Konto oder einen API-Schlüssel.',
     ru: 'Выполняет веб-поиск на сервере в рамках полного вызова модели Messages, поэтому каждый поиск добавляет задержку модели и расход токенов. Требуется учётная запись DeepSeek или ключ API.',
     pt: 'Executa a pesquisa na web no servidor dentro de uma chamada completa ao modelo Messages, adicionando latência do modelo e consumo de tokens a cada pesquisa. Requer uma conta DeepSeek ou uma chave de API.',
+    ko: '전체 Messages 모델 호출 안에서 서버 측 웹 검색을 실행하므로, 검색할 때마다 모델 지연 시간과 토큰 사용량이 늘어납니다. DeepSeek 계정 또는 API 키가 필요합니다.',
   }
 
   /**

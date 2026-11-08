@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "DSH 배지 스킬",
+    "description": "에이전트가 문서, 풀 리퀘스트 등의 결과물에 “powered by dsh” 배지를 추가할 수 있게 합니다.",
+    "detail": "docs/DETAIL.md"
+  }
+}

@@ -144,3 +144,19 @@ export const pt = {
   saveFailed: 'A implantação não aceitou esses valores; eles foram deixados para você corrigir.',
   invalidNumber: 'Insira um número ou deixe em branco para usar o padrão.',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  title: '에이전트 루프',
+  description: '에이전트가 도구 호출을 처리하는 방식을 제어합니다.',
+  maxParallel: '병렬 도구 호출',
+  maxParallelHint: '한 단계 안에서 동시에 실행할 수 있는 병렬 안전 호출의 최대 개수입니다.',
+  overridden: '재정의됨',
+  reset: '기본값으로 재설정',
+  readOnly: '이 배포에서는 설정이 읽기 전용으로 저장됩니다.',
+  unavailable: '이 플러그인이 로드되지 않아 지금은 구성할 수 없습니다.',
+  save: '저장',
+  saving: '저장하는 중…',
+  saveFailed: '배포에서 이 값을 받아들이지 않았습니다. 수정할 수 있도록 입력한 값을 그대로 두었습니다.',
+  invalidNumber: '숫자를 입력하거나, 기본값을 사용하려면 비워 두세요.',
+} satisfies Record<keyof typeof en, string>

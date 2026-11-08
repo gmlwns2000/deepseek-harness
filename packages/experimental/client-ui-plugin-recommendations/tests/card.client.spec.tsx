@@ -10,7 +10,7 @@ import { FoldedText } from '@deepseek-ai/dsh-client-ui-action-cards/src/client/C
 import type { ActionCardFields, ActionCardResult } from '@deepseek-ai/dsh-action-cards/types'
 import type { RecommendationDetails } from '@deepseek-ai/dsh-plugin-recommendations/types'
 import { PluginCardBody, type CatalogDetails, type PluginCardProps } from '../src/client/Card.tsx'
-import { de, en, es, fr, ja, pt, ru, zh } from '../src/client/locales.ts'
+import { de, en, es, fr, ja, ko, pt, ru, zh } from '../src/client/locales.ts'
 
 afterEach(cleanup)
 const callId = ToolCallId('call-plugin-1')
@@ -50,7 +50,7 @@ function description(element: HTMLElement) {
 }
 
 it('keeps every dictionary aligned', () => {
-  for (const dictionary of [en, ja, es, fr, de, ru, pt]) expect(Object.keys(dictionary).sort()).toEqual(Object.keys(zh).sort())
+  for (const dictionary of [en, ja, es, fr, de, ru, pt, ko]) expect(Object.keys(dictionary).sort()).toEqual(Object.keys(zh).sort())
 })
 
 it('shows the catalog title and description as one details target with the official badge, and enables only on click', async () => {

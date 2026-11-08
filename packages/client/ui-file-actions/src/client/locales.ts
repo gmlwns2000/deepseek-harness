@@ -130,3 +130,19 @@ export const pt = {
   'menu.downloaded': 'Download concluído',
   'path.revealError': 'Não foi possível mostrar o local do arquivo. Tente novamente.',
 } satisfies Record<FileActionKey, string>
+
+/** ko file-action labels. */
+export const ko = {
+  'menu.finder': 'Finder에서 보기',
+  'menu.reveal': '폴더에서 보기',
+  'menu.saveAs': '다른 이름으로 저장…',
+  'menu.copied': '복사됨',
+  'menu.copyImage': '이미지 복사',
+  'menu.download': '다운로드',
+  'menu.saveFailed': '저장하지 못했습니다. 원본과 대상 위치를 확인한 후 다시 시도하세요.',
+  'menu.copyFailed': '복사하지 못했습니다. 콘텐츠를 사용할 수 있는지 확인한 후 다시 시도하세요.',
+  'menu.saved': '저장됨',
+  'menu.downloadStarted': '다운로드를 시작했습니다',
+  'menu.downloaded': '다운로드 완료',
+  'path.revealError': '파일 위치를 표시하지 못했습니다. 다시 시도하세요.',
+} satisfies Record<FileActionKey, string>

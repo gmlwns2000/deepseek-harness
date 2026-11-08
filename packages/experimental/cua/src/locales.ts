@@ -56,6 +56,13 @@ export const pt = {
   approve: 'Permitir nesta sessão',
 } satisfies Record<keyof typeof en, string>
 
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  question: '에이전트가 Computer Use로 이 애플리케이션을 제어하도록 허용하시겠습니까?',
+  detail: '플러그인 페이지에서 모든 세션의 앱 권한을 관리합니다.',
+  approve: '이 세션에서 허용',
+} satisfies Record<keyof typeof en, string>
+
 /** Display translations resolved by the Client; wire choices stay unchanged. */
 export const applicationAccessDisplay = {
   question: {
@@ -67,8 +74,12 @@ export const applicationAccessDisplay = {
     de: de.question,
     ru: ru.question,
     pt: pt.question,
+    ko: ko.question,
   },
-  detail: { en: en.detail, zh: zh.detail, ja: ja.detail, es: es.detail, fr: fr.detail, de: de.detail, ru: ru.detail, pt: pt.detail },
+  detail: {
+    en: en.detail, zh: zh.detail, ja: ja.detail, es: es.detail, fr: fr.detail,
+    de: de.detail, ru: ru.detail, pt: pt.detail, ko: ko.detail,
+  },
   approve: {
     en: en.approve,
     zh: zh.approve,
@@ -78,5 +89,6 @@ export const applicationAccessDisplay = {
     de: de.approve,
     ru: ru.approve,
     pt: pt.approve,
+    ko: ko.approve,
   },
 }

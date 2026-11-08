@@ -181,3 +181,25 @@ export const pt = {
   'status.cancelled': 'Cancelado',
   'status.interrupted': 'Interrompido',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'run.title': '{name}',
+  'run.members.one': '구성원 {count}명',
+  'run.members.other': '구성원 {count}명',
+  'run.empty': '시작된 구성원이 없습니다',
+  'phase.unassigned': '단계 없음',
+  'phase.empty': '빈 단계 이름',
+  'statusCount.running': '실행 중 {count}',
+  'statusCount.completed': '완료 {count}',
+  'statusCount.failed': '실패 {count}',
+  'statusCount.cancelled': '취소됨 {count}',
+  'statusCount.interrupted': '중단됨 {count}',
+  'member.empty': '빈 구성원 이름',
+  'member.open': '{name} 열기',
+  'status.running': '실행 중',
+  'status.completed': '완료',
+  'status.failed': '실패',
+  'status.cancelled': '취소됨',
+  'status.interrupted': '중단됨',
+} satisfies Record<keyof typeof en, string>

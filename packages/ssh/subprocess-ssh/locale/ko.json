@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "SSH 하위 프로세스",
+    "description": "공유 POSIX SSH 헬퍼를 통해 하위 프로세스와 터미널을 제공합니다."
+  }
+}

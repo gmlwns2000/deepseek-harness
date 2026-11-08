@@ -60,7 +60,7 @@ Six Conversation Definitions fold the event window into nodes for one view targe
 | `src/client/stats-totals.ts` | Whole-session totals from the host stats and token-usage projections |
 | `src/client/stats-snapshot-builder.ts` | The `stats` view target builder |
 | `src/client/StatsView.tsx` | Scrollport with scroll-to-top paging, table, totals and event rows, time bars, step/tool/answer details, copy controls, and the prompt image pill with its preview and viewer |
-| `src/client/locales.ts` | Every visible string in all eight shipped languages |
+| `src/client/locales.ts` | Every visible string in all nine shipped languages |
 
 The footer switches control the totals row, event rows, and the context basis, and the footer stays pinned above the composer while the table scrolls. `Show context delta` is off by default; when on, every turn and step shows its prompt-size change against the previous measured value in that scope, with negative deltas (for example after compaction) in the error colour. An expanded step row fills the Trigger column with its start timestamp (`MM-DD HH:MM:SS.mmm`; the tooltip carries the full `YYYY-MM-DD HH:MM:SS.mmm`) and any gap of at least one second since the previous step; sub-second scheduler noise is hidden. A step carrying a model answer is expandable: clicking its row opens a detail row that renders the answer as Markdown through the shared Chat primitive, capped at 16,000 characters with a truncation notice.
 

@@ -85,3 +85,14 @@ export const pt = {
   'createPrompt.conversation': 'Crie um plug-in de visualização de conversa DSH.',
   'createPrompt.rightbar': 'Crie um plug-in DSH com uma entrada na barra lateral direita.',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'pinTooltip': '왼쪽 사이드바에 고정',
+  'pin': '사이드바에 {name} 고정',
+  install: '다른 플러그인 둘러보기',
+  create: '나만의 플러그인 만들기',
+  'createPrompt.sidebar': '왼쪽 사이드바 항목이 있는 DSH 플러그인을 만들어 주세요.',
+  'createPrompt.conversation': 'DSH 대화 보기 플러그인을 만들어 주세요.',
+  'createPrompt.rightbar': '오른쪽 사이드바 항목이 있는 DSH 플러그인을 만들어 주세요.',
+} satisfies Record<keyof typeof en, string>

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "피드백용 세션 로그 전송",
+    "description": "피드백 인가 정책에 따라 OpenTelemetry를 통해 관련 세션 로그를 업로드합니다."
+  }
+}

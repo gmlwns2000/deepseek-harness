@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "SSH 프로세스 샌드박스",
+    "description": "공유 SSH 헬퍼를 통해 원격 POSIX 프로세스용 샌드박스 명령을 구성합니다."
+  }
+}

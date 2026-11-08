@@ -57,7 +57,7 @@ The [Chat visibility policy](../ui-chat/src/client/contract/chat-visibility.ts) 
 |---|---|
 | [`src/client/mount.ts`](src/client/mount.ts) | Locale, catalog-section, and model-menu registrations |
 | [`src/client/TeamBoard.tsx`](src/client/TeamBoard.tsx) | Projection-derived task section |
-| [`src/client/locales.ts`](src/client/locales.ts) | Panel and command copy in eight languages |
+| [`src/client/locales.ts`](src/client/locales.ts) | Panel and command copy in nine languages |
 | [`src/index.ts`](src/index.ts) | Inert Host entry |
 
 </details>

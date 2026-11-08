@@ -62,3 +62,9 @@ export const pt = {
   'secret.reveal': 'Mostrar segredo',
   'secret.hide': 'Ocultar segredo',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'secret.reveal': '비밀 값 표시',
+  'secret.hide': '비밀 값 숨기기',
+} satisfies Record<keyof typeof en, string>

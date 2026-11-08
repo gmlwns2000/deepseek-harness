@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "워크스페이스 지침 불러오기",
+    "description": "AGENTS.md, CLAUDE.md 등의 파일을 읽어 AI에게 워크스페이스 규칙을 제공합니다."
+  }
+}

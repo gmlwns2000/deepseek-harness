@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "DeepSeek 세션 로그 전송",
+    "description": "활성화하면 공식 모델 API 요청과 함께 세션 로그를 DeepSeek에 업로드합니다."
+  }
+}

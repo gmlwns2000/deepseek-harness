@@ -80,3 +80,13 @@ export const pt: Record<ActionCardKey, string> = {
   'row.title': 'Cartão de ação', 'row.preparing': 'Preparando um cartão', 'row.running': 'Propondo',
   'row.ok': 'Proposto', 'row.error': 'Não exibido', 'row.stopped': 'Interrompido', 'row.inspect': 'Inspecionar chamada',
 }
+
+/** Korean card frame, fallback and tool-row copy. */
+export const ko: Record<ActionCardKey, string> = {
+  expandBrief: '더 보기', collapseBrief: '간단히 보기',
+  dismiss: '나중에', dismissed: '무시됨', replaced: '대체됨',
+  unavailable: '이 액션은 사용할 수 없습니다. 플러그인 화면에서 해당 플러그인을 확인하세요.',
+  transport: '결과를 확인하지 못했습니다. 다시 연결한 후 카드를 확인하고 다시 시도하세요.',
+  'row.title': '액션 카드', 'row.preparing': '카드를 준비하는 중', 'row.running': '제안하는 중',
+  'row.ok': '제안함', 'row.error': '표시되지 않음', 'row.stopped': '중단됨', 'row.inspect': '호출 확인',
+}

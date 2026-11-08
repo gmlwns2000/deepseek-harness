@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Claude Code mods",
+    "description": "Claude Code 확장을 불러오고 Harness 확장 지점에서 해당 훅을 실행합니다."
+  }
+}

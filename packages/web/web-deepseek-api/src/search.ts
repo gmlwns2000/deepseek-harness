@@ -83,6 +83,7 @@ export class DeepSeekSearchApiProvider implements WebSearchProvider {
     de: 'Fragt den Suchendpunkt direkt nach Titeln, URLs und Ausschnitten ab, ohne zusätzlichen Modellaufruf. Verwendet das DeepSeek-Konto der aktuellen Unterhaltung oder einen DeepSeek-API-Schlüssel und kann API-Kosten verursachen.',
     ru: 'Напрямую запрашивает поисковый сервис и возвращает заголовки, URL и фрагменты без дополнительного вызова модели. Использует учётную запись DeepSeek текущего разговора или ключ API DeepSeek; возможна оплата API.',
     pt: 'Consulta diretamente o endpoint de pesquisa e retorna títulos, URLs e trechos sem uma chamada extra ao modelo. Usa a conta DeepSeek da conversa atual ou uma chave de API da DeepSeek e pode gerar cobranças de API.',
+    ko: '추가 모델 호출 없이 검색 엔드포인트에 직접 요청하여 제목, URL, 스니펫을 반환합니다. 현재 대화의 DeepSeek 계정 또는 DeepSeek API 키를 사용하며, API 요금이 발생할 수 있습니다.',
   }
 
   /**

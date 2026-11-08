@@ -1,4 +1,4 @@
-import { zoomEn, zoomJa, zoomEs, zoomFr, zoomDe, zoomRu, zoomPt, zoomZh } from '../zoom/locales.ts'
+import { zoomEn, zoomJa, zoomEs, zoomFr, zoomDe, zoomRu, zoomPt, zoomKo, zoomZh } from '../zoom/locales.ts'
 
 /** Locale-owned image renderer labels and status text. */
 export const zh = {
@@ -88,4 +88,14 @@ export const pt = {
   loading: 'Renderizando documento...',
   failed: 'Esta imagem não pôde ser exibida.',
   unsupported: 'A visualização da imagem requer o conteúdo completo do arquivo.',
+} satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  ...zoomKo,
+  title: '이미지',
+  preview: '이미지 미리 보기: {name}',
+  loading: '문서를 렌더링하는 중...',
+  failed: '이 이미지를 표시하지 못했습니다.',
+  unsupported: '이미지 미리 보기에는 전체 파일 내용이 필요합니다.',
 } satisfies Record<keyof typeof en, string>

@@ -2,7 +2,7 @@
  * `schedule.catalog` namespace dictionaries: the Session header catalog and the
  * Sidebar row mark with its hover-card task section.
  */
-import { frequencyEn, frequencyJa, frequencyEs, frequencyFr, frequencyDe, frequencyRu, frequencyPt, frequencyZh } from './frequency-locales.ts'
+import { frequencyEn, frequencyJa, frequencyEs, frequencyFr, frequencyDe, frequencyRu, frequencyPt, frequencyKo, frequencyZh } from './frequency-locales.ts'
 
 /** Dictionary namespace owned by this plugin. */
 export const NS = 'schedule.catalog'
@@ -176,4 +176,25 @@ export const pt = {
   ...frequencyPt,
   'mark.aria': '{count} tarefas de automação',
   'hover.more': '{count} mais',
+} satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'trigger.label': '자동화 작업',
+  'list.loading': '자동화 작업을 불러오는 중…',
+  'list.error': '자동화 작업을 불러오지 못했습니다.',
+  'list.retry': '다시 시도',
+  'delete.action': '삭제',
+  'delete.pending': '삭제하는 중…',
+  'delete.label': '자동화 작업 삭제: {title}',
+  'list.open': '자동화 작업 세부 정보 열기: {title}',
+  'trigger.one': '자동화 작업 {count}개',
+  'trigger.other': '자동화 작업 {count}개',
+  'list.aria': '사용 중인 자동화 작업',
+  'list.nextRun': '다음 실행',
+  'frequency.once': '한 번',
+  'frequency.every': '{value}{unit}마다',
+  ...frequencyKo,
+  'mark.aria': '자동화 작업 {count}개',
+  'hover.more': '{count}개 더 보기',
 } satisfies Record<keyof typeof en, string>

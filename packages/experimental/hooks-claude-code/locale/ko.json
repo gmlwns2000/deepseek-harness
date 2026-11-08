@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Claude Code 훅",
+    "description": "Harness 가로채기 지점에서 Claude Code hooks.json 또는 settings에 설정된 훅을 실행합니다."
+  }
+}

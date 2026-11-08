@@ -226,3 +226,30 @@ export const pt = {
   'empty.models': 'Nenhum modelo disponível.',
   'empty.efforts': 'Este modelo não fornece níveis de esforço de raciocínio.',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'provider.account': 'DeepSeek 계정',
+  'command.label': '모델',
+  'command.description': '이 대화에서 사용할 모델 선택',
+  'option.loadError': '카탈로그를 불러오지 못했습니다: {message}',
+  'trigger.fallback': '모델 선택',
+  'trigger.loading': '모델을 불러오는 중…',
+  'trigger.selectAria': '모델 선택',
+  'trigger.aria': '모델 선택, 현재 {model}',
+  'trigger.ariaEffort': '모델 선택, 현재 {model}, 추론 강도 {effort}',
+  'menu.aria': '모델 및 추론 강도',
+  'menu.model': '모델',
+  'menu.effort': '강도',
+  'effort.providerDefault': '기본값',
+  'status.loading': '모델 목록을 새로 고치는 중…',
+  'error.action': '모델 작업을 수행하지 못했습니다: {message}',
+  'error.sessionInUse': '이 세션은 이미 사용 중입니다. 실행 중인 다른 DSH 인스턴스(dsh web 또는 데스크톱 앱 등)가 사용하고 있을 수 있습니다. 실행 중인 다른 DSH 인스턴스를 종료한 후 다시 시도하세요.',
+  'action.reload': '새로 고침',
+  'warning.groupLoad': '{name}을(를) 불러오지 못했습니다: {message}',
+  'search.placeholder': '모델 검색…',
+  'search.clear': '검색 지우기',
+  'search.empty': '일치하는 모델이 없습니다.',
+  'empty.models': '사용할 수 있는 모델이 없습니다.',
+  'empty.efforts': '이 모델은 선택할 수 있는 추론 강도를 제공하지 않습니다.',
+} satisfies Record<keyof typeof en, string>

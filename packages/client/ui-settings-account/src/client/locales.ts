@@ -1,5 +1,5 @@
 /** Account settings copy, owned by the account feature. */
-import { onboardingZh, onboardingEn, onboardingJa, onboardingEs, onboardingFr, onboardingDe, onboardingRu, onboardingPt } from './locales/onboarding.ts'
+import { onboardingZh, onboardingEn, onboardingJa, onboardingEs, onboardingFr, onboardingDe, onboardingRu, onboardingPt, onboardingKo } from './locales/onboarding.ts'
 
 /** English account dictionary. */
 export const en = {
@@ -305,4 +305,39 @@ export const pt = {
   quotaDescription: 'DeepSeek Harness não pode iniciar uma nova tarefa com esta conta quando não houver saldo disponível. Você gostaria de recarregar? Você também pode recarregar mais tarde em Configurações → Conta.',
   quotaTopUp: 'Recarregar',
   bonusNoticeTitle: 'Bônus creditado',
+} satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  modelSignInRequired: '모델을 사용할 수 없습니다. 로그인한 후 다시 시도하세요.',
+  sessionExpired: '계정에서 로그아웃되었습니다. 다시 로그인하세요.',
+  ...onboardingKo,
+  close: '닫기', addApiKey: 'API 키 추가', retry: '다시 로그인',
+  loginTitle: '시작하기', loginDescription: 'DeepSeek 계정에 로그인하거나 API 키를 추가하여 시작하세요. 프로젝트와 파일은 로컬에 저장됩니다.',
+  browserTitle: '로그인 대기 중', browserPrompt: '페이지가 자동으로 열리지 않았나요? ', copyLink: '로그인 링크 복사', copiedLink: '링크 복사됨', copyFailed: '복사하지 못했습니다',
+  browserDescription: ' 후 브라우저에서 열어 로그인을 완료하세요.',
+  timeoutTitle: '로그인 시간이 초과되었습니다', timeoutDescription: '계속하려면 다시 로그인하세요.',
+  failureTitle: '로그인하지 못했습니다',
+  platformFailed: '작업을 완료하지 못했습니다. 다시 시도하세요.', platformRetry: '다시 시도',
+  loading: '불러오는 중…', backToHarness: 'DeepSeek Harness로 돌아가기',
+  settings: '설정', contactUs: '피드백', menu: '계정 메뉴',
+  nav: '계정', signedIn: 'DeepSeek에 로그인됨', signedOut: '로그인하지 않음',
+  signIn: '로그인', signOut: '로그아웃',
+  signOutUnknownDescription: '실행 중인 작업을 확인하지 못했습니다. 로그아웃하면 이 계정을 사용하는 작업이 중단될 수 있습니다. 지금 로그아웃하시겠습니까?',
+  signOutDescription: '로그아웃해도 데이터는 삭제되지 않습니다. 이 계정에 다시 로그인할 수 있습니다.',
+  signOutRunningDescription: '현재 실행 중인 작업이 있습니다. 로그아웃하면 작업이 중단됩니다. 지금 로그아웃하시겠습니까?', cancel: '취소', open: '브라우저 열기',
+  initializing: '로그인을 시작하는 중…', waiting: '브라우저에서 계속하세요',
+  completing: '로그인을 완료하는 중…', expired: '로그인이 만료되었습니다. 다시 시도하세요.',
+  failed: '작업을 완료하지 못했습니다. 다시 시도하세요.',
+  noResponse: '문제가 발생했습니다. 네트워크 연결을 확인한 후 다시 시도하세요.',
+  settingsSignedOutTitle: 'DeepSeek Harness에 로그인하지 않았습니다',
+  settingsSignedOutDescription: 'DeepSeek Harness에 로그인하여 전용 API 키를 받으세요',
+  signInDescription: 'DeepSeek 계정으로 시작하세요.',
+  profileUnavailable: '아직 계정 정보를 사용할 수 없습니다.',
+  balance: '충전 잔액', bonusBalance: '보너스 잔액', balanceUnavailable: '플랫폼에서 보기', balanceSignedOut: '로그인하여 보기',
+  accountInfo: '추가 계정 정보', more: '더 보기', usage: '사용량 보기', topUp: '충전',
+  quotaTitle: '사용 가능한 잔액 없음',
+  quotaDescription: '사용 가능한 잔액이 없으면 DeepSeek Harness는 이 계정으로 새 작업을 시작할 수 없습니다. 지금 충전하시겠습니까? 나중에 설정 → 계정에서 충전할 수도 있습니다.',
+  quotaTopUp: '충전',
+  bonusNoticeTitle: '보너스 지급됨',
 } satisfies Record<keyof typeof en, string>

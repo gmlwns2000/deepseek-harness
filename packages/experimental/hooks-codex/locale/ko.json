@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Codex 훅",
+    "description": "Harness 가로채기 지점에서 Codex hooks.json에 설정된 훅을 실행합니다."
+  }
+}

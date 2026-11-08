@@ -101,3 +101,15 @@ export const pt = {
   'row.inspect': 'Inspecionar',
   'menu.userOnly': 'somente usuário',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'row.title': '스킬',
+  'row.running': '스킬 불러오는 중',
+  'row.preparing': '스킬 불러오기 준비 중',
+  'row.failed': '스킬을 불러오지 못했습니다',
+  'row.stopped': '스킬 불러오기가 중지되었습니다',
+  'row.instructions': '지침',
+  'row.inspect': '살펴보기',
+  'menu.userOnly': '사용자 전용',
+} satisfies Record<keyof typeof en, string>

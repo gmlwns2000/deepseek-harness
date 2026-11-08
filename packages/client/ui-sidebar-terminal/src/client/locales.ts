@@ -164,3 +164,21 @@ export const pt = {
   invalidOutput: 'A tela do terminal não pôde ser recebida. Reconecte para recuperá-lo.',
   terminalLimit: 'O limite terminal foi atingido. Feche os terminais não utilizados e tente novamente. Os terminais encerrados também contam para o limite.',
 } satisfies Record<keyof typeof en, string>
+
+/** Korean dictionary, checked against the English keys. */
+export const ko = {
+  'shortcut.noSession': '먼저 세션을 선택하세요',
+  recoveryFailed: '터미널을 복구하지 못했습니다: {message}', retryRecovery: '터미널 복구 다시 시도',
+  shell: '셸 선택', shellLoading: '셸을 불러오는 중…', shellEmpty: '사용할 수 있는 셸이 없습니다', description: '세션 워크스페이스에서 명령을 실행합니다',
+  title: '터미널', new: '새 터미널', loading: '터미널 환경을 읽는 중…', creating: '시작하는 중…',
+  connecting: '연결하는 중…', disconnected: '연결이 끊어졌습니다.', reconnect: '다시 연결',
+  readonly: '이 보기는 읽기 전용입니다.', control: '제어권 가져오기',
+  closed: '터미널이 닫혔습니다.', exited: '프로세스가 종료되었습니다 ({code})', failed: '터미널 오류: {message}',
+  rename: '터미널 이름', unavailable: '사용할 수 없음', retry: '다시 시도',
+  cleanupFailed: '터미널 “{title}”(을)를 종료하지 못했습니다: {message}',
+  missingTerminal: '이 터미널은 더 이상 존재하지 않습니다. 새 터미널을 여세요.',
+  inputFull: '입력 버퍼가 가득 찼습니다. 다시 연결한 후 다시 시도하세요.',
+  attachmentEnded: '터미널 연결이 종료되었습니다. 계속하려면 다시 연결하세요.',
+  invalidOutput: '터미널 화면을 받지 못했습니다. 복구하려면 다시 연결하세요.',
+  terminalLimit: '터미널 개수 제한에 도달했습니다. 사용하지 않는 터미널을 닫고 다시 시도하세요. 종료된 터미널도 제한에 포함됩니다.',
+} satisfies Record<keyof typeof en, string>
