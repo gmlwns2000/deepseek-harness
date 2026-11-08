@@ -31,7 +31,7 @@
   "dependencies": {
     "@deepseek-ai/schemastery": "workspace:~",
     "@deepseek-ai/dsh-timeout": "workspace:*",
-    "execa": "^10.0.1",
+    "execa": "^10.1.0",
     "zod": "^4.4.3"
   },
   "peerDependencies": {
