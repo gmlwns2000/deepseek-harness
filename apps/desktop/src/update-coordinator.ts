@@ -14,6 +14,14 @@ import { discardDesktopUpdate } from './updates/electron-updater/discard.ts'
 
 const { autoUpdater } = electronUpdater
 
+/**
+ * Report whether packaging embedded an update feed for this process.
+ * @returns true for a packaged application with `app-update.yml` in its resources.
+ */
+export function hasPackagedUpdateSource(): boolean {
+  return app.isPackaged && existsSync(join(process.resourcesPath, 'app-update.yml'))
+}
+
 /** Owns one updater target until its download and installation settle. */
 export class DesktopUpdateCoordinator {
   private current: DesktopUpdateState = { phase: 'idle' }
@@ -51,7 +59,7 @@ export class DesktopUpdateCoordinator {
    * @param publish - Receives observable states for every Desktop window.
    * @param beforeRestart - Completes task authorization, admission locking, and owned-process shutdown.
    * @param updater - Process-owned Electron updater, replaceable at the network/platform test boundary.
-   * @param enabled - Whether this process has a packaged update source.
+   * @param enabled - Whether this process may contact its packaged update source.
    * @param currentVersion - Actual installed application version.
    * @param channel - Installed package channel; omitted test/local callers retain nightly.
    * @param discard - Clears settled library targets and platform resources before another channel is used.
@@ -61,7 +69,7 @@ export class DesktopUpdateCoordinator {
     private readonly publish: (state: DesktopUpdateState) => DesktopUpdateState,
     private readonly beforeRestart: () => Promise<boolean>,
     private readonly updater: AppUpdater = autoUpdater,
-    private readonly enabled: () => boolean = () => app.isPackaged && existsSync(join(process.resourcesPath, 'app-update.yml')),
+    private readonly enabled: () => boolean = hasPackagedUpdateSource,
     private readonly currentVersion: () => string = () => app.getVersion(),
     private readonly downloadResult?: (success: boolean, reason?: string) => void,
     private channel: DesktopUpdateChannel = 'nightly',
@@ -269,7 +277,7 @@ export class DesktopUpdateCoordinator {
     const generation = this.generation
     try {
       this.assertLive()
-      if (!this.enabled()) throw new Error('desktop update: this application has no packaged update source')
+      if (!this.enabled()) throw new Error('desktop update: update checks are unavailable for an unpackaged application or with DSH_DESKTOP_UPDATES_DISABLED set')
       const result = await this.updater.checkForUpdates()
       if (generation !== this.generation || this.disposed) return this.current
       if (result === null) throw new Error('desktop update: no check result was returned')

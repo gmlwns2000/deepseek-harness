@@ -204,10 +204,11 @@
 
     # OTel releases a Session-log prefix only after explicit user feedback,
     # regardless of model provider. Ordinary activity never triggers capture.
-    # DSH_TELEMETRY_OTLP_URL overrides the production endpoint. A non-empty
-    # DSH_TELEMETRY_DISABLED — any value, including '0'/'false' — opts the
-    # process out (the launchers patch the row disabled; config cannot disable
-    # a row). Exports carry the harness home's anonymous user id ($DSH_HOME/.anonymous-user-id,
+    # DSH_TELEMETRY_OTLP_URL overrides the production endpoint. The launchers
+    # patch this row disabled unless the launching environment sets
+    # DSH_TELEMETRY_ENABLED; a non-empty DSH_TELEMETRY_DISABLED — any value,
+    # including '0'/'false' — keeps it disabled even then (config cannot
+    # disable a row). Exports carry the harness home's anonymous user id ($DSH_HOME/.anonymous-user-id,
     # random UUID; delete the file to reset the identity) as the Resource's
     # user.id. Byte-bounded batching may turn an authorized prefix into
     # several HTTP requests. Requests run serially; each has its own 1s

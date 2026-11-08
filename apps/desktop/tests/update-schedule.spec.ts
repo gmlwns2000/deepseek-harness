@@ -2,7 +2,7 @@ import { EventEmitter } from 'node:events'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { AppUpdater } from 'electron-updater'
 import type { DesktopUpdateState } from '../src/ipc.ts'
-import { DesktopUpdateSchedule, resolveDesktopUpdateScheduleConfig } from '../src/update-schedule.ts'
+import { DesktopUpdateSchedule, desktopUpdatesDisabled, resolveDesktopUpdateScheduleConfig } from '../src/update-schedule.ts'
 
 vi.mock('electron', () => ({ app: { isPackaged: false } }))
 vi.mock('electron-updater', () => ({ default: { autoUpdater: {} } }))
@@ -182,5 +182,16 @@ describe('ordinary update polling configuration', () => {
     ['JITTER', '-0.1'], ['JITTER', '1.1'], ['JITTER', 'NaN'],
   ])('rejects invalid %s=%s at configuration load', (suffix, value) => {
     expect(() => resolveDesktopUpdateScheduleConfig({ [`DSH_DESKTOP_UPDATE_CHECK_${suffix}`]: value })).toThrow()
+  })
+})
+
+describe('update opt-out', () => {
+  it('keeps updates on only when DSH_DESKTOP_UPDATES_DISABLED is unset or empty', () => {
+    expect(desktopUpdatesDisabled({})).toBe(false)
+    expect(desktopUpdatesDisabled({ DSH_DESKTOP_UPDATES_DISABLED: '' })).toBe(false)
+  })
+
+  it.each(['1', '0', 'false', 'no'])('turns updates off for any non-empty value: %s', (value) => {
+    expect(desktopUpdatesDisabled({ DSH_DESKTOP_UPDATES_DISABLED: value })).toBe(true)
   })
 })

@@ -129,6 +129,8 @@ describe('runProfile with an application-owned profile', () => {
         patches: [{ insert: [
           { id: 'target', name: 'target', config: { bundle: true, priority: 'bundle' } },
           { id: 'session-telemetry-otel', name: 'telemetry' },
+          { id: 'product-analytics', name: 'analytics' },
+          { id: 'desktop-product-telemetry', name: 'analytics-exporter' },
         ] }],
       }],
     }
@@ -162,7 +164,9 @@ describe('runProfile with an application-owned profile', () => {
         { id: 'target', config: { overlay: true, priority: 'overlay' } },
       ])
       expect(rows.find(row => row.id === 'target')?.config).toEqual({ overlay: true, priority: 'overlay' })
-      expect(rows.find(row => row.id === 'session-telemetry-otel')?.disabled).toBe(true)
+      for (const id of ['session-telemetry-otel', 'product-analytics', 'desktop-product-telemetry']) {
+        expect(rows.find(row => row.id === id)?.disabled).toBe(true)
+      }
       expect(ctx.profileContext).toMatchObject({ dir: home, patchPath: profilePatch, installAnchor: runtime.installAnchor })
       await shutdown.shutdown(0)
       expect(dispose).toHaveBeenCalledOnce()
