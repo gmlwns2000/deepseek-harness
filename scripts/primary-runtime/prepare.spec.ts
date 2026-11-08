@@ -5,12 +5,14 @@ import { tmpdir } from 'node:os'
 import { basename, join } from 'node:path'
 import { zipSync } from 'fflate'
 import { expect, it } from 'vitest'
+import { DESKTOP_BUILD_TARGETS } from '../../apps/desktop/scripts/desktop-build-paths.mjs'
 import { downloadPrimaryRuntimeAsset, prepareOfficeSkillAssets, primaryRuntimePayloadDigest, prunePnpmForeignNativePackages, smokePrimaryRuntime, unpackPrimaryRuntimeWheel } from './prepare.ts'
 import lock from './lock.json' with { type: 'json' }
 
-it('covers every SDK wheel target with the shared interpreter lock', () => {
+it('locks exactly the SDK wheel targets and Desktop build targets', () => {
   const platforms = JSON.parse(readFileSync(new URL('../../python/sdk-runtime/platforms.json', import.meta.url), 'utf8')) as Record<string, unknown>
-  expect(Object.keys(lock.targets).sort()).toEqual(Object.keys(platforms).map(target => target.replace('macos-', 'mac-')).sort())
+  const sdkTargets = Object.keys(platforms).map(target => target.replace('macos-', 'mac-'))
+  expect(Object.keys(lock.targets).sort()).toEqual([...new Set([...sdkTargets, ...DESKTOP_BUILD_TARGETS])].sort())
 })
 
 const libraryWheel = Buffer.from('UEsDBAoAAAAAAASeLl0sYMPjDAAAAAwAAAAJAAAAc2FtcGxlLnB5c2FtcGxlID0gNDIKUEsBAh4DCgAAAAAABJ4uXSxgw+MMAAAADAAAAAkAAAAAAAAAAQAAAKSBAAAAAHNhbXBsZS5weVBLBQYAAAAAAQABADcAAAAzAAAAAAA=', 'base64')

@@ -19,6 +19,7 @@ description: "在本地或 Windows／macOS Actions 中生成 Desktop 安装包�
 - [macOS 自托管打包](#macos-actions)
 - [未签名 Windows 测试安装包](#unsigned-windows-test-installer)
 - [无发布签名的本地 macOS DMG](#local-macos-dmg-without-release-signing)
+- [本地 Windows arm64 安装](#local-windows-arm64-installation)
 - [macOS 发布签名与诊断](#macos-release-signing)
 - [目录构建与准备](#directory-and-preparation)
 - [用回环 registry 安装本地 Official 包](#local-official-bundles-from-a-loopback-registry)
@@ -177,6 +178,20 @@ pnpm run package:desktop:mac:x64:unsigned
 添加 `--check` 仅验证本地配置和工具而不构建，或添加 `--dir` 只生成解包应用。DMG 路径为 `apps/desktop/.desktop-build/targets/<target>/unsigned-artifacts/deepseek-harness-<version>-mac-<arch>-unsigned.dmg`。所有检查通过后，命令打印 `DMG:` 及其绝对路径。打开后将应用复制到本地测试目录。
 
 这些命令忽略 `.env.macos` 和继承的发布配置，使用 `com.deepseek.harness` 作为应用 ID，并省略自动更新和强制更新配置。构建工具、标准网络代理与 `DSH_DESKTOP_NPM_REGISTRY` 仍可从 shell 提供。它们跳过 Developer ID 签名、Apple 公证、临时签名钥匙串和公证代理修改。Electron 使用无需证书的本地 ad-hoc 签名，以便修改后的可执行文件能够运行；DMG 不签名。准备阶段和组装后的应用仍执行运行时完整性与冒烟检查。本地构建不生成更新源、ZIP 或发布完成记录，上传命令无法发布这些产物。macOS 可能要求在“系统设置 → 隐私与安全性”中批准打开未经公证的应用。这类构建不放入 Computer Use helper，Computer Use 准备时会报告 helper 缺失。
+
+<a id="local-windows-arm64-installation"></a>
+
+## 本地 Windows arm64 安装
+
+在 Windows arm64 上，从仓库根目录运行一条命令，即可构建当前检出并为当前用户安装：
+
+```sh
+pnpm run deploy:desktop:win:arm64:local
+```
+
+该命令先运行 `pnpm run package:desktop:win:arm64:dir`，构建未签名应用目录 `apps/desktop/.desktop-build/targets/win-arm64/unsigned-artifacts/win-arm64-unpacked/`，再将其复制到 `%LOCALAPPDATA%\Programs\DeepSeek Harness Local`，并创建名为 `DeepSeek Harness Local` 的开始菜单快捷方式。本地修改后再次运行即可替换安装。请先退出已安装的应用：运行中的安装无法替换，会保持不变。
+
+与本地 macOS 构建相同，打包会忽略 `.env.windows` 和继承的发布配置，使用 `com.deepseek.harness` 作为应用 ID，并省略自动更新和强制更新配置。它不构建安装包，因此无需 Visual C++ Build Tools。`win-arm64` 没有安装包、签名或更新发布，打包命令仅在同时指定 `--unsigned --dir` 时接受该目标。该安装与发布版安装共享应用数据和 `$DSH_HOME`。如需移除，删除安装目录以及 `%APPDATA%\Microsoft\Windows\Start Menu\Programs` 下的快捷方式。
 
 <a id="macos-release-signing"></a>
 

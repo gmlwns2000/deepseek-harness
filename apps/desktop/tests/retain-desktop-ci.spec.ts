@@ -124,3 +124,9 @@ it('rejects missing or ambiguous archival routing before packaging starts', () =
     dedicated: { label: 'dsh-shared', target: 'mac-arm64' }, other: { label: 'dsh-shared', target: 'mac-arm64' },
   }) })).toThrow('unique artifact routing label')
 })
+
+it('rejects a Windows arm64 build target because it has no release', () => {
+  const env = { RUNNER_NAME: 'dedicated', DSH_DESKTOP_TARGET_PLATFORM: 'win32', DSH_DESKTOP_TARGET_ARCH: 'arm64',
+    DESKTOP_PUBLISH_RUNNERS: JSON.stringify({ dedicated: { label: 'dsh-windows', target: 'win-x64' } }) }
+  expect(() => resolveDesktopRetentionRunner(env)).toThrow('unsupported target win-arm64')
+})

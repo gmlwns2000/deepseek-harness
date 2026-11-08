@@ -1,5 +1,26 @@
 import type { DesktopAutoUpdateTarget } from './desktop-auto-update-environment.mjs'
 
+/** Desktop build target: every release target plus Windows arm64, which builds development payloads and unsigned local packages but has no release. */
+export type DesktopBuildTarget = DesktopAutoUpdateTarget | 'win-arm64'
+
+/** Every supported Desktop build target name. */
+export const DESKTOP_BUILD_TARGETS: readonly DesktopBuildTarget[]
+
+/**
+ * Report whether a build target has release packaging: installers, signing, update publication and update policy.
+ * `win-arm64` has none; it packages only unsigned local application directories.
+ * @param target - Supported Desktop target name.
+ * @returns Whether the target is a release target.
+ */
+export function desktopTargetHasRelease(target: DesktopBuildTarget): target is DesktopAutoUpdateTarget
+
+/**
+ * Name the unpacked application directory electron-builder writes for a Windows target inside its artifact directory.
+ * @param target - Windows Desktop target name.
+ * @returns Directory name.
+ */
+export function desktopWindowsUnpackedDirectory(target: 'win-x64' | 'win-arm64'): 'win-unpacked' | 'win-arm64-unpacked'
+
 /** Mutable target directories plus shared download and package caches. */
 export interface DesktopTargetBuildPaths {
   readonly root: string
@@ -19,7 +40,8 @@ export interface DesktopTargetBuildPaths {
 }
 
 /**
- * Resolve the fixed build target selected by a packaging environment.
+ * Resolve the build target selected by a packaging environment.
+ * Without an architecture override, a Windows target uses the architecture of a Windows host and x64 from any other host.
  * @param env - Packaging environment.
  * @param hostPlatform - Build-host platform used when no target override exists.
  * @param hostArch - Build-host architecture used when no target override exists.
@@ -29,23 +51,22 @@ export function resolveDesktopBuildTarget(
   env?: NodeJS.ProcessEnv,
   hostPlatform?: NodeJS.Platform,
   hostArch?: string,
-): DesktopAutoUpdateTarget
+): DesktopBuildTarget
 
 /**
- * Return the mutable preparation and artifact directories owned by one release target.
+ * Return the mutable preparation and artifact directories owned by one build target.
  * @param target - Supported Desktop target name.
  * @param environment - Packaging environment with an optional absolute cache directory.
  * @returns Target paths plus shared download and package caches.
  */
-export function desktopTargetBuildPaths(target: DesktopAutoUpdateTarget, environment?: NodeJS.ProcessEnv): DesktopTargetBuildPaths
+export function desktopTargetBuildPaths(target: DesktopBuildTarget, environment?: NodeJS.ProcessEnv): DesktopTargetBuildPaths
 
 /**
- * Return the platform and architecture of the payload one release target prepares.
- * Windows is prepared as x64 only, so this differs from the build host on an arm64 Windows machine.
+ * Return the platform and architecture of the payload one build target prepares.
  * @param target - Supported Desktop target name.
  * @returns Platform and architecture of the prepared payload.
  */
-export function desktopTargetPlatform(target: DesktopAutoUpdateTarget): {
+export function desktopTargetPlatform(target: DesktopBuildTarget): {
   readonly platform: 'darwin' | 'win32'
   readonly arch: 'arm64' | 'x64'
 }

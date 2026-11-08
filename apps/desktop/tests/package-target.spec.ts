@@ -87,6 +87,19 @@ describe('desktop package target', () => {
       .toThrow(/cannot use --prepare-only/u)
   })
 
+  it('builds win-arm64 only as an unsigned application directory on a Windows arm64 host', () => {
+    expect(parseDesktopPackageInvocation(['win-arm64', '--unsigned', '--dir'], 'win32', 'arm64')).toMatchObject({
+      target: { name: 'win-arm64', platform: 'win32', arch: 'arm64', builderPlatform: '--win', builderArch: '--arm64' },
+      unsigned: true, directory: true,
+    })
+    expect(parseDesktopPackageInvocation(['--unsigned', '--dir'], 'win32', 'arm64').target.name).toBe('win-arm64')
+    for (const argv of [['win-arm64'], ['win-arm64', '--unsigned'], ['win-arm64', '--dir'], ['--prepare-only']]) {
+      expect(() => parseDesktopPackageInvocation(argv, 'win32', 'arm64')).toThrow(/pass --unsigned --dir/u)
+    }
+    expect(() => resolveDesktopPackageTarget('win-arm64', 'win32', 'x64')).toThrow(/Windows arm64/u)
+    expect(() => resolveDesktopPackageTarget('win-x64', 'win32', 'arm64')).toThrow(/Windows x64/u)
+  })
+
   it('removes ambient certificate inputs for unsigned builds and overrides an inherited signing mode', () => {
     const environment = {
       DSH_DESKTOP_APP_ID: 'com.example.desktop',

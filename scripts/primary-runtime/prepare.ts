@@ -90,16 +90,17 @@ export async function downloadRuntimeNpmPackage(artifact: RuntimeNpmArchive, des
  */
 export async function downloadNodeRuntime(target: PrimaryRuntimeTarget, destination: string, cache: string): Promise<void> {
   const artifact = lock.targets[target]
+  const windows = primaryRuntimeTargetPlatform(target).platform === 'win32'
   const filename = `node-v${lock.nodeVersion}-${artifact.nodeArchive}`
   const archive = await downloadPrimaryRuntimeAsset(`https://nodejs.org/dist/v${lock.nodeVersion}/${filename}`, artifact.nodeSha256, cache)
   const staging = mkdtempSync(join(tmpdir(), 'dsh-node-'))
   try {
-    if (target === 'win-x64') await extractZip(archive, { dir: staging })
+    if (windows) await extractZip(archive, { dir: staging })
     else await extractTar({ file: archive, cwd: staging })
     const source = join(staging, filename.replace(/\.(?:zip|tar\.gz)$/u, ''))
     mkdirSync(join(destination, 'bin'), { recursive: true })
-    cpSync(join(source, ...(target === 'win-x64' ? ['node.exe'] : ['bin', 'node'])),
-      join(destination, 'bin', target === 'win-x64' ? 'node.exe' : 'node'))
+    cpSync(join(source, ...(windows ? ['node.exe'] : ['bin', 'node'])),
+      join(destination, 'bin', windows ? 'node.exe' : 'node'))
     cpSync(join(source, 'LICENSE'), join(destination, 'LICENSE'))
   } finally {
     rmSync(staging, { recursive: true, force: true })
@@ -186,6 +187,11 @@ export async function prepareOfficeSkillAssets(source: string, destination: stri
 /** A locked interpreter and wheel target. */
 export type PrimaryRuntimeTarget = keyof typeof lock.targets
 
+function primaryRuntimeTargetPlatform(target: PrimaryRuntimeTarget): { platform: 'win32' | 'linux' | 'darwin'; arch: 'arm64' | 'x64' } {
+  const platform = target.startsWith('win-') ? 'win32' : target.startsWith('linux-') ? 'linux' : 'darwin'
+  return { platform, arch: target.endsWith('-arm64') ? 'arm64' : 'x64' }
+}
+
 /** Resource preparation inputs shared by builds and explicit SDK downloads. */
 export interface PreparePrimaryRuntimeOptions {
   /** Target whose archives and wheels are downloaded. */
@@ -219,8 +225,7 @@ export async function preparePrimaryRuntime(options: PreparePrimaryRuntimeOption
     const output = join(staging, 'payload')
     const dependencies = join(output, 'dependencies')
     mkdirSync(dependencies, { recursive: true })
-    const platform = target === 'win-x64' ? 'win32' : target.startsWith('linux-') ? 'linux' : 'darwin'
-    const arch = target.endsWith('-arm64') ? 'arm64' : 'x64'
+    const { platform, arch } = primaryRuntimeTargetPlatform(target)
     let pnpmVersion: string | undefined
     if (!options.pythonOnly) {
       const node = join(dependencies, 'node')

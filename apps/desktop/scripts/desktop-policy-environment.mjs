@@ -1,5 +1,17 @@
 /** Resolve the required policy service from the same deployment as updater publication. */
 import { resolveDesktopAutoUpdateEnvironment } from './desktop-auto-update-environment.mjs'
+import { desktopTargetHasRelease } from './desktop-build-paths.mjs'
+
+/**
+ * Report whether a package embeds mandatory-update policy metadata.
+ * Unsigned macOS packages and targets without a release carry none, so their packaging reads no policy settings.
+ * @param {'mac-arm64' | 'mac-x64' | 'win-x64' | 'win-arm64'} target - Desktop build target.
+ * @param {boolean} unsigned - Whether the package skips release signing.
+ * @returns {boolean} Whether packaging resolves and embeds the policy.
+ */
+export function desktopPackageHasPolicy(target, unsigned) {
+  return desktopTargetHasRelease(target) && !(unsigned && target.startsWith('mac-'))
+}
 
 function origin(value, name) {
   let url
