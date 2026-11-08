@@ -4,3 +4,4 @@ Welcome to DeepSeek Harness
 Build potential. Explore intelligence.
 Sign in
 Add API Key
+Use a local model server

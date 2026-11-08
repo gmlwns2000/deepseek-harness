@@ -3,6 +3,29 @@ import type { ProductEvent } from '@deepseek-ai/dsh-client-product-analytics/typ
 
 import { randomUUID } from 'node:crypto'
 import { desktopAccountBackend, type DesktopAccountBackend } from './account-backend.ts'
+import {
+  isWelcomeApiKey, isWelcomeModelId, isWelcomeServerUrl, type WelcomeLocalServer,
+} from './welcome-api.ts'
+
+/** Profile entry of the pi-ai adapter that owns hand-declared provider routes. */
+const LOCAL_SETTINGS_NS = 'llm-pi-ai'
+/** Route id the local-model page creates or replaces. */
+const LOCAL_PROVIDER = 'local'
+/** Credential reference the Models page derives for {@link LOCAL_PROVIDER}. */
+const LOCAL_API_KEY_REF = 'LOCAL_API_KEY'
+/** Wire protocol local OpenAI-compatible servers speak. */
+const LOCAL_PROTOCOL = 'openai-completions'
+/**
+ * pi-ai's OpenAI-compatible client refuses a request without a key, so a keyless
+ * server receives this value as its bearer token, which such servers ignore.
+ */
+const LOCAL_PLACEHOLDER_KEY = 'dsh-local-no-key'
+/** Profile entry that stores the model selection for new sessions. */
+const DEFAULT_MODEL_NS = 'agent-default-model'
+
+function validLocalServer(server: WelcomeLocalServer): boolean {
+  return isWelcomeServerUrl(server.baseURL) && (server.apiKey === undefined || isWelcomeApiKey(server.apiKey))
+}
 
 /** Metadata needed before the native entry or workspace becomes visible. */
 export interface WelcomeState {
@@ -28,6 +51,18 @@ export interface DesktopWelcomeBackend {
    * @returns A safe write outcome without provider diagnostics.
    */
   save(apiKey: string): Promise<{ ok: boolean }>
+  /**
+   * @param server - local endpoint and optional key, used for this listing only.
+   * @returns advertised model ids, or undefined when the listing failed.
+   */
+  discoverLocal(server: WelcomeLocalServer): Promise<readonly string[] | undefined>
+  /**
+   * Replace the `local` pi-ai route, store its key or a placeholder, and select its model for new sessions.
+   * @param server - local endpoint and optional key.
+   * @param model - model id the route declares and new sessions use.
+   * @returns a safe write outcome without provider diagnostics.
+   */
+  saveLocal(server: WelcomeLocalServer, model: string): Promise<{ ok: boolean }>
 }
 
 function record(value: unknown): value is Record<string, unknown> {
@@ -141,6 +176,49 @@ export function connectDesktopWelcome(
         return { ok: true }
       } catch {
         // Provider diagnostics may contain credentials; the native form owns failure copy.
+        return { ok: false }
+      }
+    },
+    async discoverLocal(server) {
+      if (!validLocalServer(server)) return undefined
+      try {
+        const models = await invoke({ namespace: 'llm', method: 'discoverModels', args: {
+          settingsNs: LOCAL_SETTINGS_NS,
+          request: { baseURL: server.baseURL, api: LOCAL_PROTOCOL, ...server.apiKey === undefined ? {} : { apiKey: server.apiKey } },
+        } })
+        if (!Array.isArray(models)) return undefined
+        return [...new Set(models.flatMap((model: unknown) =>
+          record(model) && typeof model.id === 'string' && isWelcomeModelId(model.id) ? [model.id] : []))]
+      } catch {
+        // Endpoint diagnostics may echo the typed key; the native form owns failure copy.
+        return undefined
+      }
+    },
+    async saveLocal(server, model) {
+      if (!validLocalServer(server) || !isWelcomeModelId(model)) return { ok: false }
+      try {
+        await invoke({ namespace: 'settings', method: 'mutate', args: { ns: LOCAL_SETTINGS_NS, ops: [{
+          op: 'set',
+          path: ['providers', LOCAL_PROVIDER],
+          value: {
+            apiKeyEnv: LOCAL_API_KEY_REF,
+            api: LOCAL_PROTOCOL,
+            baseURL: server.baseURL,
+            // Local servers accept `max_tokens` and the `system` role; OpenAI-only spellings are refused by several.
+            compat: { supportsDeveloperRole: false, maxTokensField: 'max_tokens' },
+            models: [{ id: model }],
+          },
+        }] } })
+        await invoke({ namespace: 'credentials', method: 'set', args: { ref: LOCAL_API_KEY_REF, value: server.apiKey ?? LOCAL_PLACEHOLDER_KEY } })
+        await invoke({ namespace: 'settings', method: 'mutate', args: { ns: DEFAULT_MODEL_NS, ops: [
+          { op: 'set', path: ['provider'], value: LOCAL_PROVIDER },
+          { op: 'set', path: ['model'], value: model },
+          // The declared model has no reasoning levels, so a previous effort would be refused.
+          { op: 'unset', path: ['reasoningEffort'] },
+        ] } })
+        return { ok: true }
+      } catch {
+        // Provider and settings diagnostics may contain credentials; the native form owns failure copy.
         return { ok: false }
       }
     },

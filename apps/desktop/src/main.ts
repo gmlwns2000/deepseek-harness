@@ -1402,6 +1402,17 @@ async function main(): Promise<void> {
           await enterWorkspace()
           return { ok: true }
         },
+        discoverLocalModels: async (server) => {
+          const models = await welcomeBackend?.discoverLocal(server)
+          return models === undefined ? { ok: false } : { ok: true, models }
+        },
+        saveLocalModel: async (server, model) => {
+          if (backend.host === undefined || welcomeBackend === undefined) return { ok: false }
+          const saved = await welcomeBackend.saveLocal(server, model)
+          if (!saved.ok) return saved
+          await enterWorkspace()
+          return { ok: true }
+        },
         skip: enterWorkspace,
       })
       const window = welcomeWindow

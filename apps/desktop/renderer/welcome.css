@@ -304,6 +304,63 @@ body {
   line-height: 22px;
 }
 
+.local-form {
+  gap: 28px;
+}
+
+/* Positions the shared message line below the last field. */
+.local-fields {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.local-model input {
+  padding-right: 176px;
+}
+
+.local-find {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  max-width: 160px;
+  height: 32px;
+  padding: 0 12px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--dsw-alias-brand-primary);
+  font-family: var(--dsw-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  app-region: no-drag;
+  cursor: pointer;
+}
+
+.local-find:hover:not(:disabled) {
+  background: var(--dsw-alias-button-floating-hover);
+}
+
+.local-find:disabled {
+  color: var(--dsw-alias-label-caption);
+  cursor: not-allowed;
+}
+
+.local-find:focus-visible {
+  outline: 2px solid var(--dsw-alias-label-primary);
+  outline-offset: 1px;
+}
+
+.local-status {
+  color: var(--dsw-alias-label-secondary);
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;

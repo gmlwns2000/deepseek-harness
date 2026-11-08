@@ -4,9 +4,18 @@ import type { FormEvent } from 'react'
 import { Toast } from '@deepseek-ai/dsh-client-ui-primitives/src/Toast.tsx'
 import { StateDot } from '@deepseek-ai/dsh-client-ui-primitives/src/StateDot.tsx'
 import type { AccountView } from '@deepseek-ai/dsh-deepseek-account/types'
-import type { WelcomeApi } from '../welcome-api.ts'
+import { formatDesktopMessage } from '../locale.ts'
+import { isWelcomeModelId, isWelcomeServerUrl, type WelcomeApi } from '../welcome-api.ts'
 
-type Page = 'entry' | 'key' | 'account'
+type Page = 'entry' | 'key' | 'local' | 'account'
+/** Local-model input that a failure message describes; `form` names a whole-form failure. */
+type LocalField = 'url' | 'model' | 'key' | 'form'
+
+/** Reject pasted text that is not the key itself: non-ASCII, an assignment, or a quoted value. */
+function invalidKeyDraft(value: string): boolean {
+  return !/^[\x21-\x7e]+$/.test(value) || /^[A-Z][A-Z0-9_]*=[^=]/.test(value)
+    || ((value.startsWith('"') || value.startsWith("'") || value.charCodeAt(0) === 96) && value.at(-1) === value[0])
+}
 
 /**
  * Render the standalone welcome flow using shell-owned operations and localized copy.
@@ -34,14 +43,26 @@ export function Welcome({ api }: { api: WelcomeApi }) {
   const revision = useRef(0)
   const input = useRef<HTMLInputElement>(null)
   const keyButton = useRef<HTMLButtonElement>(null)
-  const focusEntry = useRef(false)
+  const localButton = useRef<HTMLButtonElement>(null)
+  const entryFocus = useRef<HTMLButtonElement | null>(null)
+  const [localUrl, setLocalUrl] = useState('')
+  const [localModel, setLocalModel] = useState('')
+  const [localKey, setLocalKey] = useState('')
+  const [localModels, setLocalModels] = useState<readonly string[]>([])
+  const [localError, setLocalError] = useState<{ field: LocalField; message: string } | null>(null)
+  const [localStatus, setLocalStatus] = useState('')
+  const [finding, setFinding] = useState(false)
+  const findRevision = useRef(0)
+  const urlInput = useRef<HTMLInputElement>(null)
+  const modelInput = useRef<HTMLInputElement>(null)
+  const localKeyInput = useRef<HTMLInputElement>(null)
 
   function navigate(next: Page) {
     pageRef.current = next
     setPage(next)
   }
   function showAccount(state: AccountView) {
-    if (pageRef.current === 'key' || (state.attempt === null && pageRef.current === 'entry')) return
+    if (pageRef.current === 'key' || pageRef.current === 'local' || (state.attempt === null && pageRef.current === 'entry')) return
     attemptRef.current = state.attempt
     setAttempt(state.attempt)
     setStarting(false)
@@ -73,9 +94,10 @@ export function Welcome({ api }: { api: WelcomeApi }) {
     if (page === 'entry' && visiblePage.current !== 'entry') void api.analytics?.('auth_page_view', {})
     visiblePage.current = page
     if (page === 'key') input.current?.focus()
-    else if (page === 'entry' && focusEntry.current) {
-      focusEntry.current = false
-      keyButton.current?.focus()
+    else if (page === 'local') urlInput.current?.focus()
+    else if (page === 'entry' && entryFocus.current !== null) {
+      entryFocus.current.focus()
+      entryFocus.current = null
     }
   }, [page, api])
 
@@ -90,8 +112,7 @@ export function Welcome({ api }: { api: WelcomeApi }) {
     if (busyRef.current) return
     void api.analytics?.('api_key_save_click', {})
     const value = draft.trim()
-    if (!/^[\x21-\x7e]+$/.test(value) || /^[A-Z][A-Z0-9_]*=[^=]/.test(value)
-      || ((value.startsWith('"') || value.startsWith("'") || value.charCodeAt(0) === 96) && value.at(-1) === value[0])) {
+    if (invalidKeyDraft(value)) {
       setError(value === '' ? m.welcomeKeyBlank : m.welcomeKeyInvalid)
       input.current?.focus()
       return
@@ -115,15 +136,86 @@ export function Welcome({ api }: { api: WelcomeApi }) {
     if (busyRef.current) return
     busyRef.current = true
     setBusy(true)
+    const fromLocal = pageRef.current === 'local'
     try {
       await api.skip()
-      if (mounted.current) setDraft('')
+      if (mounted.current) { setDraft(''); setLocalKey('') }
     } catch {
-      if (mounted.current) setError(m.welcomeContinueFailed)
+      if (mounted.current) {
+        if (fromLocal) setLocalError({ field: 'form', message: m.welcomeContinueFailed })
+        else setError(m.welcomeContinueFailed)
+      }
     } finally {
       busyRef.current = false
       if (mounted.current) setBusy(false)
     }
+  }
+  function failLocal(field: LocalField, message: string) {
+    setLocalStatus('')
+    setLocalError({ field, message })
+    if (field === 'url') urlInput.current?.focus()
+    else if (field === 'model') modelInput.current?.focus()
+    else if (field === 'key') localKeyInput.current?.focus()
+  }
+  /** Validate the endpoint fields shared by listing and saving. @returns the request facts, or undefined after reporting the failure. */
+  function localServer(): { baseURL: string; apiKey?: string } | undefined {
+    const baseURL = localUrl.trim()
+    if (!isWelcomeServerUrl(baseURL)) { failLocal('url', m.welcomeLocalUrlInvalid); return undefined }
+    const apiKey = localKey.trim()
+    if (apiKey !== '' && invalidKeyDraft(apiKey)) { failLocal('key', m.welcomeKeyInvalid); return undefined }
+    return apiKey === '' ? { baseURL } : { baseURL, apiKey }
+  }
+  async function findLocalModels() {
+    if (finding || busyRef.current) return
+    const server = localServer()
+    if (server === undefined) return
+    const current = ++findRevision.current
+    setFinding(true)
+    setLocalError(null)
+    setLocalStatus('')
+    try {
+      const result = await api.discoverLocalModels(server)
+      if (!mounted.current || findRevision.current !== current) return
+      if (!result.ok) { failLocal('url', m.welcomeLocalDiscoveryFailed); return }
+      setLocalModels(result.models)
+      const [first] = result.models
+      if (first === undefined) { failLocal('model', m.welcomeLocalNoModels); return }
+      setLocalStatus(formatDesktopMessage(m.welcomeLocalFound, { count: String(result.models.length) }))
+      setLocalModel(value => value.trim() === '' ? first : value)
+      modelInput.current?.focus()
+    } catch {
+      if (mounted.current && findRevision.current === current) failLocal('url', m.welcomeLocalDiscoveryFailed)
+    } finally {
+      if (mounted.current && findRevision.current === current) setFinding(false)
+    }
+  }
+  async function saveLocal(event: FormEvent) {
+    event.preventDefault()
+    if (busyRef.current) return
+    const server = localServer()
+    if (server === undefined) return
+    const model = localModel.trim()
+    if (!isWelcomeModelId(model)) { failLocal('model', m.welcomeLocalModelBlank); return }
+    busyRef.current = true
+    setBusy(true)
+    setLocalError(null)
+    try {
+      const result = await api.saveLocalModel(server, model)
+      if (!mounted.current) return
+      if (result.ok) setLocalKey('')
+      else failLocal('form', m.welcomeLocalFailed)
+    } catch {
+      if (mounted.current) failLocal('form', m.welcomeLocalFailed)
+    } finally {
+      busyRef.current = false
+      if (mounted.current) setBusy(false)
+    }
+  }
+  function resetLocal() {
+    findRevision.current++
+    setFinding(false)
+    setLocalUrl(''); setLocalModel(''); setLocalKey(''); setLocalModels([])
+    setLocalError(null); setLocalStatus('')
   }
   async function start() {
     navigate('account')
@@ -169,7 +261,8 @@ export function Welcome({ api }: { api: WelcomeApi }) {
   const title = phase === 'initializing' ? m.welcomeAuthStarting
     : waiting ? m.welcomeAuthWaiting : phase === 'expired' ? m.welcomeAuthExpired
       : phase === 'failed' ? m.welcomeAuthFailed : m.welcomeAuthExchanging
-  const heading = page === 'entry' ? 'welcome-heading' : page === 'key' ? 'key-title' : 'auth-status'
+  const heading = page === 'entry' ? 'welcome-heading' : page === 'key' ? 'key-title' : page === 'local' ? 'local-title' : 'auth-status'
+  const localInvalid = (field: LocalField) => localError?.field === field
 
   return <>
     {expiryNotice && <Toast text={m.welcomeSessionExpired} onDone={() => { setExpiryNotice(false) }} />}
@@ -188,6 +281,36 @@ export function Welcome({ api }: { api: WelcomeApi }) {
             aria-describedby="key-description key-error" aria-invalid={error !== ''} placeholder={m.welcomeKeyPlaceholder}
             value={draft} disabled={busy} onChange={(event) => { setDraft(event.target.value); setError('') }} />
           <p id="key-error" className="key-error" role="alert" hidden={error === ''}>{error}</p>
+        </div>
+      </form>
+      <form id="local-form" className="key-form local-form" hidden={page !== 'local'} noValidate onSubmit={(event) => { void saveLocal(event) }} aria-busy={busy}>
+        <header className="key-heading"><h1 id="local-title">{m.welcomeLocalTitle}</h1><p id="local-description">{m.welcomeLocalDescription}</p></header>
+        <div className="local-fields">
+          <div className="key-field">
+            <label className="visually-hidden" htmlFor="local-url">{m.welcomeLocalUrlPlaceholder}</label>
+            <input ref={urlInput} id="local-url" type="url" inputMode="url" autoComplete="off" autoCapitalize="off" spellCheck={false} required
+              aria-describedby="local-description local-error" aria-invalid={localInvalid('url')} placeholder={m.welcomeLocalUrlPlaceholder}
+              value={localUrl} disabled={busy} onChange={(event) => {
+                setLocalUrl(event.target.value); setLocalModels([]); setLocalError(null); setLocalStatus('')
+              }} />
+          </div>
+          <div className="key-field local-model">
+            <label className="visually-hidden" htmlFor="local-model">{m.welcomeLocalModelPlaceholder}</label>
+            <input ref={modelInput} id="local-model" type="text" list="local-model-options" autoComplete="off" autoCapitalize="off" spellCheck={false} required
+              aria-describedby="local-error local-status" aria-invalid={localInvalid('model')} placeholder={m.welcomeLocalModelPlaceholder}
+              value={localModel} disabled={busy} onChange={(event) => { setLocalModel(event.target.value); setLocalError(null) }} />
+            <datalist id="local-model-options">{localModels.map(id => <option key={id} value={id} />)}</datalist>
+            <button id="local-find" className="local-find" type="button" disabled={busy || finding || localUrl.trim() === ''}
+              onClick={() => { void findLocalModels() }}>{finding ? m.welcomeLocalFinding : m.welcomeLocalFindModels}</button>
+          </div>
+          <div className="key-field">
+            <label className="visually-hidden" htmlFor="local-key">{m.welcomeLocalKeyPlaceholder}</label>
+            <input ref={localKeyInput} id="local-key" type="password" autoComplete="new-password" autoCapitalize="off" spellCheck={false}
+              aria-describedby="local-error" aria-invalid={localInvalid('key')} placeholder={m.welcomeLocalKeyPlaceholder}
+              value={localKey} disabled={busy} onChange={(event) => { setLocalKey(event.target.value); setLocalError(null) }} />
+          </div>
+          <p id="local-error" className="key-error" role="alert" hidden={localError === null}>{localError?.message}</p>
+          <p id="local-status" className="key-error local-status" role="status" hidden={localError !== null || localStatus === ''}>{localStatus}</p>
         </div>
       </form>
       <section id="auth-page" className={`key-heading ${waiting ? 'auth-waiting' : phase === 'expired' ? 'auth-expired' : ''}`}
@@ -211,13 +334,23 @@ export function Welcome({ api }: { api: WelcomeApi }) {
       <div id="entry-actions" className="actions" hidden={page !== 'entry'}>
         <button id="sign-in" className="primary" type="button" onClick={() => { void api.analytics?.('auth_page_click', { button_name: 'sign_in' }); void start() }}>{m.welcomeSignIn}</button>
         <button ref={keyButton} id="api-key" className="secondary" type="button" onClick={() => { void api.analytics?.('auth_page_click', { button_name: 'api-key' }); navigate('key') }}>{m.welcomeApiKey}</button>
+        <button ref={localButton} id="use-local-model" className="back" type="button" onClick={() => { navigate('local') }}>{m.welcomeLocalModel}</button>
       </div>
       <div id="key-actions" className="actions" hidden={page !== 'key'}>
         <button id="save-key" className="primary" type="submit" form="key-form" disabled={busy || draft.trim() === ''}>{m.welcomeKeySave}</button>
         <button id="skip-key" className="secondary" type="button" disabled={busy} onClick={() => { void skip() }}>{m.welcomeKeyLater}</button>
         <button id="back-to-login" className="back" type="button" disabled={busy} onClick={() => {
           if (busyRef.current) return
-          setDraft(''); setError(''); focusEntry.current = true; navigate('entry')
+          setDraft(''); setError(''); entryFocus.current = keyButton.current; navigate('entry')
+        }}>{m.welcomeKeyBack}</button>
+      </div>
+      <div id="local-actions" className="actions" hidden={page !== 'local'}>
+        <button id="save-local" className="primary" type="submit" form="local-form"
+          disabled={busy || localUrl.trim() === '' || localModel.trim() === ''}>{m.welcomeKeySave}</button>
+        <button id="skip-local" className="secondary" type="button" disabled={busy} onClick={() => { void skip() }}>{m.welcomeKeyLater}</button>
+        <button id="local-back" className="back" type="button" disabled={busy} onClick={() => {
+          if (busyRef.current) return
+          resetLocal(); entryFocus.current = localButton.current; navigate('entry')
         }}>{m.welcomeKeyBack}</button>
       </div>
     </main>
