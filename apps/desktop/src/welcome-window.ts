@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { app, BrowserWindow, ipcMain, type BrowserWindowConstructorOptions, type IpcMainInvokeEvent } from 'electron'
 import type { DesktopLocale } from './locale.ts'
-import { WELCOME_IPC, type WelcomeOperations } from './welcome-api.ts'
+import { WELCOME_IPC, isWelcomeModelId, parseWelcomeLocalServer, type WelcomeOperations } from './welcome-api.ts'
 
 /**
  * Resolve the fixed-size welcome window's native material and controls.
@@ -67,6 +67,7 @@ export async function openWelcomeWindow(locale: DesktopLocale, operations: Welco
     for (const channel of [
       WELCOME_IPC.analyticsEnabled, WELCOME_IPC.analytics, WELCOME_IPC.takeNotice, WELCOME_IPC.saveApiKey,
       WELCOME_IPC.skip, WELCOME_IPC.start, WELCOME_IPC.cancel, WELCOME_IPC.copyLink,
+      WELCOME_IPC.discoverLocalModels, WELCOME_IPC.saveLocalModel,
     ]) {
       ipcMain.removeHandler(channel)
     }
@@ -97,6 +98,18 @@ export async function openWelcomeWindow(locale: DesktopLocale, operations: Welco
     assertSender(event)
     if (typeof value !== 'string' || !/^[\x21-\x7e]+$/.test(value)) return { ok: false }
     return operations.saveApiKey(value)
+  })
+  ipcMain.handle(WELCOME_IPC.discoverLocalModels, async (event, value: unknown) => {
+    assertSender(event)
+    const server = parseWelcomeLocalServer(value)
+    if (server === undefined) return { ok: false }
+    return operations.discoverLocalModels(server)
+  })
+  ipcMain.handle(WELCOME_IPC.saveLocalModel, async (event, value: unknown, model: unknown) => {
+    assertSender(event)
+    const server = parseWelcomeLocalServer(value)
+    if (server === undefined || typeof model !== 'string' || !isWelcomeModelId(model)) return { ok: false }
+    return operations.saveLocalModel(server, model)
   })
   ipcMain.handle(WELCOME_IPC.skip, async (event) => {
     assertSender(event)

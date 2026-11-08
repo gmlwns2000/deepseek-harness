@@ -46,6 +46,8 @@ const operations = {
   cancelSignIn: async () => ({ links: { usageUrl: 'http://localhost/usage', topUpUrl: 'http://localhost/top_up' }, status: 'signed-out' as const, attempt: null }),
   copySignInLink: async () => undefined,
   saveApiKey: () => Promise.resolve({ ok: true as const }),
+  discoverLocalModels: () => Promise.resolve({ ok: true as const, models: ['llama3.2'] }),
+  saveLocalModel: () => Promise.resolve({ ok: true as const }),
   skip: () => Promise.resolve(),
 }
 
@@ -177,6 +179,36 @@ describe('desktop welcome window', () => {
     expect(currentStart).toHaveBeenCalledOnce()
     expect(previousStart).not.toHaveBeenCalled()
     current.once.mock.calls[0]![1]()
+    expect(electron.handlers.size).toBe(0)
+  })
+
+  it('passes only well-formed local server requests from its own top frame', async () => {
+    const window = createWindow()
+    electron.create.mockReturnValue(window)
+    const discoverLocalModels = vi.fn(operations.discoverLocalModels)
+    const saveLocalModel = vi.fn(operations.saveLocalModel)
+    await openWelcomeWindow(resolveDesktopLocale('en'), { ...operations, discoverLocalModels, saveLocalModel })
+    const own = { sender: window.webContents, senderFrame: window.webContents.mainFrame }
+    const discover = electron.handlers.get(WELCOME_IPC.discoverLocalModels)!
+    const save = electron.handlers.get(WELCOME_IPC.saveLocalModel)!
+    await expect(discover({ ...own, senderFrame: {} }, { baseURL: 'http://127.0.0.1:11434/v1' })).rejects.toThrow('unowned frame')
+    await expect(save({ sender: {}, senderFrame: {} }, { baseURL: 'http://127.0.0.1:11434/v1' }, 'llama3.2')).rejects.toThrow('unowned frame')
+    for (const server of [
+      null, 'http://127.0.0.1:11434/v1', { baseURL: 'file:///etc/passwd' }, { baseURL: 'http://user:secret@127.0.0.1/v1' },
+      { baseURL: 'http://127.0.0.1/v1', apiKey: 'bad key' }, { baseURL: 'http://127.0.0.1/v1', extra: true },
+    ]) {
+      expect(await discover(own, server)).toEqual({ ok: false })
+      expect(await save(own, server, 'llama3.2')).toEqual({ ok: false })
+    }
+    expect(await save(own, { baseURL: 'http://127.0.0.1/v1' }, 'two words')).toEqual({ ok: false })
+    expect(await save(own, { baseURL: 'http://127.0.0.1/v1' }, 42)).toEqual({ ok: false })
+    expect(discoverLocalModels).not.toHaveBeenCalled()
+    expect(saveLocalModel).not.toHaveBeenCalled()
+    expect(await discover(own, { baseURL: 'http://127.0.0.1:11434/v1' })).toEqual({ ok: true, models: ['llama3.2'] })
+    expect(discoverLocalModels).toHaveBeenCalledExactlyOnceWith({ baseURL: 'http://127.0.0.1:11434/v1' })
+    expect(await save(own, { baseURL: 'https://gpu.internal/v1', apiKey: 'sk-local' }, 'qwen2.5:7b')).toEqual({ ok: true })
+    expect(saveLocalModel).toHaveBeenCalledExactlyOnceWith({ baseURL: 'https://gpu.internal/v1', apiKey: 'sk-local' }, 'qwen2.5:7b')
+    window.once.mock.calls[0]![1]()
     expect(electron.handlers.size).toBe(0)
   })
 

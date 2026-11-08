@@ -1,0 +1,11 @@
+DeepSeek Harness
+DeepSeek Harness
+Connect a local model server
+Use an OpenAI-compatible server such as Ollama, LM Studio, or vLLM without an account
+Server URL, for example http://127.0.0.1:11434/v1 [url]
+Model ID [text]
+API key (optional) [password]
+Find models [disabled]
+Save and continue [disabled]
+Set up later
+Back to sign in

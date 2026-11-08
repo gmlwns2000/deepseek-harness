@@ -6,7 +6,7 @@ import { Welcome } from '../src/client/WelcomePage.tsx'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { resolveDesktopLocale } from '../src/locale.ts'
 import type { AccountView } from '@deepseek-ai/dsh-deepseek-account/types'
-import type { WelcomeSaveResult, WelcomeNotice } from '../src/welcome-api.ts'
+import type { WelcomeDiscoveryResult, WelcomeLocalServer, WelcomeSaveResult, WelcomeNotice } from '../src/welcome-api.ts'
 
 const html = readFileSync(join(import.meta.dirname, '../renderer/welcome.html'), 'utf8')
 afterEach(cleanup)
@@ -24,6 +24,9 @@ function mount(language = 'zh-CN', takeNotice = vi.fn<() => Promise<WelcomeNotic
     copySignInLink: vi.fn(async () => undefined),
     ...resolveDesktopLocale(language),
     saveApiKey: vi.fn<(value: string) => Promise<WelcomeSaveResult>>().mockResolvedValue({ ok: true }),
+    discoverLocalModels: vi.fn<(server: WelcomeLocalServer) => Promise<WelcomeDiscoveryResult>>()
+      .mockResolvedValue({ ok: true, models: ['llama3.2', 'qwen2.5:7b'] }),
+    saveLocalModel: vi.fn<(server: WelcomeLocalServer, model: string) => Promise<WelcomeSaveResult>>().mockResolvedValue({ ok: true }),
     skip: vi.fn<() => Promise<void>>().mockResolvedValue(undefined),
   }
   const mounted = render(<Welcome api={api} />)
@@ -39,12 +42,23 @@ function mount(language = 'zh-CN', takeNotice = vi.fn<() => Promise<WelcomeNotic
       document.title, document.querySelector('img')!.alt, document.getElementById(heading)!.textContent,
       ...heading === 'welcome-heading' ? [document.querySelector('#welcome-description')!.textContent] : [],
       ...heading === 'key-title' ? [document.querySelector('#key-description')!.textContent, `${input.placeholder} [password]`] : [],
+      ...heading === 'local-title' ? [
+        document.querySelector('#local-description')!.textContent,
+        ...[...document.querySelectorAll<HTMLInputElement>('#local-form input')].map(item => `${item.placeholder} [${item.type}]`),
+      ] : [],
       ...[...document.querySelectorAll('button')].filter(item => item.closest('[hidden]') === null)
         .map(item => `${item.textContent || item.getAttribute('aria-label')}${item.disabled ? ' [disabled]' : ''}`),
       '',
     ].join('\n')
   }
-  return { document, api, input, button, enterKey, submit, copy, unmount: mounted.unmount, stopAccount }
+  const field = (id: string) => document.querySelector<HTMLInputElement>(id)!
+  const enterLocal = (values: { url?: string; model?: string; key?: string }) => {
+    if (values.url !== undefined) fireEvent.change(field('#local-url'), { target: { value: values.url } })
+    if (values.model !== undefined) fireEvent.change(field('#local-model'), { target: { value: values.model } })
+    if (values.key !== undefined) fireEvent.change(field('#local-key'), { target: { value: values.key } })
+  }
+  const submitLocal = () => fireEvent.submit(document.querySelector('#local-form')!)
+  return { document, api, input, button, enterKey, submit, copy, field, enterLocal, submitLocal, unmount: mounted.unmount, stopAccount }
 }
 
 describe('desktop welcome presentation', () => {
@@ -340,4 +354,123 @@ it('reports each return to the welcome entry once, including account cancellatio
   fireEvent.click(view.button('#sign-in'))
   await act(async () => { pending.resolve({ links: { usageUrl: 'http://localhost/usage', topUpUrl: 'http://localhost/top_up' }, status: 'signed-out', attempt: null }) })
   expect(view.api.analytics.mock.calls.map(([action]) => action)).toEqual(['auth_page_click', 'auth_page_view', 'auth_page_click', 'auth_page_view'])
+})
+
+describe('desktop welcome local model server', () => {
+  it.each(['zh-CN', 'en'])('renders the %s local-model step and focuses the server URL', async (language) => {
+    const view = mount(language)
+    fireEvent.click(view.button('#use-local-model'))
+    expect(view.document.activeElement).toBe(view.field('#local-url'))
+    expect(view.field('#local-key').type).toBe('password')
+    expect(view.field('#local-key').autocomplete).toBe('new-password')
+    await expect(view.copy()).toMatchFileSnapshot(`./expected/welcome/${language}-local.expected.txt`)
+  })
+
+  it('lists the server models, fills the first one, and saves without a key', async () => {
+    const view = mount('en')
+    fireEvent.click(view.button('#use-local-model'))
+    view.enterLocal({ url: '  http://127.0.0.1:11434/v1  ' })
+    fireEvent.click(view.button('#local-find'))
+    await vi.waitFor(() => { expect(view.field('#local-model').value).toBe('llama3.2') })
+    expect(view.api.discoverLocalModels).toHaveBeenCalledExactlyOnceWith({ baseURL: 'http://127.0.0.1:11434/v1' })
+    expect(view.document.querySelector('#local-status')!.textContent).toBe('Models found: 2')
+    expect([...view.document.querySelectorAll('#local-model-options option')].map(item => item.getAttribute('value'))).toEqual(['llama3.2', 'qwen2.5:7b'])
+    view.submitLocal()
+    await vi.waitFor(() => { expect(view.api.saveLocalModel).toHaveBeenCalledOnce() })
+    expect(view.api.saveLocalModel).toHaveBeenCalledWith({ baseURL: 'http://127.0.0.1:11434/v1' }, 'llama3.2')
+    expect(view.api.saveApiKey).not.toHaveBeenCalled()
+  })
+
+  it('keeps a typed model, sends a typed key, and clears the key after saving', async () => {
+    const view = mount('en')
+    fireEvent.click(view.button('#use-local-model'))
+    view.enterLocal({ url: 'https://gpu.internal/v1', model: 'qwen2.5:7b', key: ' sk-local ' })
+    fireEvent.click(view.button('#local-find'))
+    await vi.waitFor(() => { expect(view.button('#local-find').disabled).toBe(false) })
+    expect(view.field('#local-model').value).toBe('qwen2.5:7b')
+    expect(view.api.discoverLocalModels).toHaveBeenCalledWith({ baseURL: 'https://gpu.internal/v1', apiKey: 'sk-local' })
+    const saved = Promise.withResolvers<WelcomeSaveResult>()
+    view.api.saveLocalModel.mockReturnValueOnce(saved.promise)
+    view.submitLocal()
+    view.submitLocal()
+    fireEvent.click(view.button('#skip-local'))
+    expect(view.api.saveLocalModel).toHaveBeenCalledExactlyOnceWith({ baseURL: 'https://gpu.internal/v1', apiKey: 'sk-local' }, 'qwen2.5:7b')
+    expect(view.api.skip).not.toHaveBeenCalled()
+    expect(view.button('#save-local').disabled).toBe(true)
+    expect(view.button('#local-back').disabled).toBe(true)
+    saved.resolve({ ok: true })
+    await vi.waitFor(() => { expect(view.field('#local-key').value).toBe('') })
+    expect(view.document.body.textContent).not.toContain('sk-local')
+  })
+
+  it.each([
+    [{ url: 'localhost:11434', model: 'llama3.2' }, '#local-url', 'Enter an http:// or https:// server URL.'],
+    [{ url: 'http://127.0.0.1:11434/v1', model: 'two words' }, '#local-model', 'Enter a model ID, or find the models the server offers.'],
+    [{ url: 'http://127.0.0.1:11434/v1', model: 'llama3.2', key: '"sk-local"' }, '#local-key',
+      'Enter the API key itself, without quotes, spaces, or an environment-variable assignment.'],
+  ])('rejects invalid input before sending it: %j', (values, invalid, message) => {
+    const view = mount('en')
+    fireEvent.click(view.button('#use-local-model'))
+    view.enterLocal(values)
+    view.submitLocal()
+    expect(view.api.saveLocalModel).not.toHaveBeenCalled()
+    expect(view.document.querySelector('#local-error')!.textContent).toBe(message)
+    expect(view.field(invalid).getAttribute('aria-invalid')).toBe('true')
+    expect(view.document.activeElement).toBe(view.field(invalid))
+  })
+
+  it.each([
+    [{ ok: false } as const, 'Could not list models from the server. Check the URL, or enter a model ID.', '#local-url'],
+    [{ ok: true, models: [] } as const, 'The server listed no models. Enter a model ID.', '#local-model'],
+  ])('reports a listing without usable models: %j', async (result, message, invalid) => {
+    const view = mount('en')
+    view.api.discoverLocalModels.mockResolvedValueOnce(result)
+    fireEvent.click(view.button('#use-local-model'))
+    view.enterLocal({ url: 'http://127.0.0.1:11434/v1' })
+    fireEvent.click(view.button('#local-find'))
+    await vi.waitFor(() => { expect(view.document.querySelector('#local-error')!.textContent).toBe(message) })
+    expect(view.field(invalid).getAttribute('aria-invalid')).toBe('true')
+    expect(view.field('#local-model').value).toBe('')
+  })
+
+  it('retains the drafts after a refused save and resets them on return to the entry', async () => {
+    const view = mount('en')
+    view.api.saveLocalModel.mockResolvedValueOnce({ ok: false })
+    fireEvent.click(view.button('#use-local-model'))
+    view.enterLocal({ url: 'http://127.0.0.1:11434/v1', model: 'llama3.2', key: 'sk-local' })
+    view.submitLocal()
+    await vi.waitFor(() => {
+      expect(view.document.querySelector('#local-error')!.textContent).toBe('Could not save the local model server. Please try again.')
+    })
+    expect(view.field('#local-key').value).toBe('sk-local')
+    fireEvent.click(view.button('#local-back'))
+    expect(view.document.activeElement).toBe(view.button('#use-local-model'))
+    fireEvent.click(view.button('#use-local-model'))
+    expect([view.field('#local-url').value, view.field('#local-model').value, view.field('#local-key').value]).toEqual(['', '', ''])
+    expect(view.document.querySelector<HTMLElement>('#local-error')!.hidden).toBe(true)
+  })
+
+  it('ignores a listing that finishes after the page was left', async () => {
+    const view = mount('en')
+    const listing = Promise.withResolvers<WelcomeDiscoveryResult>()
+    view.api.discoverLocalModels.mockReturnValueOnce(listing.promise)
+    fireEvent.click(view.button('#use-local-model'))
+    view.enterLocal({ url: 'http://127.0.0.1:11434/v1' })
+    fireEvent.click(view.button('#local-find'))
+    expect(view.button('#local-find').textContent).toBe('Finding…')
+    fireEvent.click(view.button('#local-back'))
+    await act(async () => { listing.resolve({ ok: true, models: ['late-model'] }) })
+    fireEvent.click(view.button('#use-local-model'))
+    expect(view.field('#local-model').value).toBe('')
+    expect(view.button('#local-find').textContent).toBe('Find models')
+  })
+
+  it('keeps account updates from leaving the local-model step', () => {
+    const view = mount('en')
+    fireEvent.click(view.button('#use-local-model'))
+    const publish = view.api.onAccountState.mock.calls[0]![0]
+    act(() => { publish({ status: 'signed-out', links: { usageUrl: 'http://localhost/usage', topUpUrl: 'http://localhost/top_up' },
+      attempt: { id: 'other' as NonNullable<AccountView['attempt']>['id'], phase: 'failed' } }) })
+    expect(view.document.querySelector<HTMLElement>('#local-form')!.hidden).toBe(false)
+  })
 })
