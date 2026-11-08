@@ -40,6 +40,8 @@ describe('web e2e: plugin configuration pages', () => {
     scaffold = await launchWebScaffold({
       extraOverlayPath: fileURLToPath(new URL('./pin-browse-picker.overlay.yml', import.meta.url)),
       deepSeekSearch: { apiKeyEnv: UNUSED_KEY_ENV },
+      // The provider scenario edits the DeepSeek web providers, which the shared base disables.
+      deepSeekWebProviders: true,
       profile: { packages: [{ dir: join(FIXTURE_PLUGINS, 'fixture-live-client') }] },
     })
     browser = await chromium.launch()
@@ -167,24 +169,24 @@ describe('web e2e: plugin configuration pages', () => {
       await expect.poll(() => page.getByRole('menuitem').count()).toBe(0)
       return items
     }
-    // The shipped composition selects the DeepSeek Search API and local fetch, and the page writes nothing on mount.
+    // The DeepSeek web composition selects the DeepSeek Search API and local fetch, and the page writes nothing on mount.
     expect(await searchMenu.textContent()).toBe('DeepSeek Search API')
     expect(await fetchMenu.textContent()).toBe('本机直接获取')
     expect(await panel.getByRole('button', { name: '网页搜索提供方 DeepSeek Search API', exact: true }).count()).toBe(1)
     expect(await panel.getByRole('button', { name: '网页获取提供方 本机直接获取', exact: true }).count()).toBe(1)
-    expect(await entries(searchMenu)).toEqual(['DeepSeek Search API', 'DeepSeek（旧版）'])
+    expect(await entries(searchMenu)).toEqual(['DeepSeek Search API', 'DeepSeek（旧版）', 'DuckDuckGo'])
     expect(await entries(fetchMenu)).toEqual(['本机直接获取', 'DeepSeek Fetch API'])
     expect(await settingsDocument()).not.toContain('searchProvider:')
     // The page fixes the menu order itself; the Loader imports plugins concurrently, so the
     // Host's registration order is not the YAML row order and only its membership is checked here.
     const hostWeb = scaffold.ctx.get('web') as { listProviders(): Record<'search' | 'fetch', { id: string }[]> } | undefined
-    expect(hostWeb?.listProviders().search.map(provider => provider.id).sort()).toEqual(['deepseek-official', 'deepseek-search-api'])
+    expect(hostWeb?.listProviders().search.map(provider => provider.id).sort()).toEqual(['deepseek-official', 'deepseek-search-api', 'duckduckgo'])
     expect(await panel.getByRole('link', { name: '网页搜索与获取指南', exact: true }).getAttribute('href'))
       .toBe('https://api-docs.deepseek.com/zh-cn/guides/search')
     // Each section shows the description its selected provider registered with the Host, in the active language.
     expect(await searchSection.getByText('直接请求搜索接口返回标题、URL 与摘要，无需额外调用模型。使用当前会话的 DeepSeek 账号或 DeepSeek API Key，可能产生计费', { exact: true }).count()).toBe(1)
-    expect(await fetchSection.getByText('本机直接请求，免 API Key 与计费，可访问内网和本机。仅解码 HTML、JSON 等文本，不执行 JavaScript、不带登录态，不支持 PDF；也可以试试 DeepSeek Fetch API', { exact: true }).count()).toBe(1)
-    // The Fetch API suggestion is text, not an action.
+    expect(await fetchSection.getByText('本机直接请求，免 API Key 与计费，可访问内网和本机。仅解码 HTML、JSON 等文本，不执行 JavaScript、不带登录态，不支持 PDF。', { exact: true }).count()).toBe(1)
+    // The local fetcher has no settings; its section's only button is the menu.
     expect(await fetchSection.getByRole('button').count()).toBe(1)
     expect(await save.isDisabled()).toBe(true)
 
@@ -234,7 +236,7 @@ describe('web e2e: plugin configuration pages', () => {
     await openPage(panel, '网页搜索与获取')
     expect(await searchMenu.textContent()).toBe('DeepSeek（旧版）')
     expect(await messagesEndpoint.inputValue()).toBe('https://messages.test/anthropic/v1')
-    expect(await entries(searchMenu)).toEqual(['DeepSeek Search API', 'DeepSeek（旧版）'])
+    expect(await entries(searchMenu)).toEqual(['DeepSeek Search API', 'DeepSeek（旧版）', 'DuckDuckGo'])
     expect(await save.isDisabled()).toBe(true)
     expect(await settingsDocument()).toContain('searchProvider: deepseek-official')
     await choose(searchMenu, 'DeepSeek Search API')

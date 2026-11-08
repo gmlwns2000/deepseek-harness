@@ -22,7 +22,7 @@ kind: "package-group"
 <a id="packages"></a>
 ## 包
 
-五个包分别承担 web 角色；完整词汇与约定以子系统参考文档为准。
+六个包分别承担 web 角色；完整词汇与约定以子系统参考文档为准。
 
 | 包 | 职责 | ctx 键 |
 |---|---|---|
@@ -30,6 +30,7 @@ kind: "package-group"
 | [`web-search-deepseek/`](web-search-deepseek/README.zh.md) | 通过 DeepSeek Messages 搜索网页 | 注册到 `ctx.web` |
 | [`web-deepseek-api/`](web-deepseek-api/README.zh.md) | 通过 DeepSeek Search 与 Fetch API 搜索和抓取网页 | 注册到 `ctx.web` |
 | [`web-fetch-http/`](web-fetch-http/README.zh.md) | 匿名抓取 HTTP(S) 页面 | 注册到 `ctx.web` |
+| [`web-search-duckduckgo/`](web-search-duckduckgo/README.zh.md) | 匿名搜索 DuckDuckGo | 注册到 `ctx.web` |
 | [`tool-web/`](tool-web/README.zh.md) | 向模型公开 `web_search` 与 `web_fetch` | 注册到 `ctx.tools` |
 
 -----

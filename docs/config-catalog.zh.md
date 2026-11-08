@@ -4794,6 +4794,31 @@ export interface Config {
 ```
 <!-- END GENERATED config-catalog:@deepseek-ai/dsh-web-search-deepseek -->
 
+<!-- BEGIN GENERATED config-catalog:@deepseek-ai/dsh-web-search-duckduckgo -->
+<a id="deepseek-aidsh-web-search-duckduckgo"></a>
+
+## `@deepseek-ai/dsh-web-search-duckduckgo`
+
+- `inject`: `web`
+- `source`: [`packages/web/web-search-duckduckgo/src/index.ts:33`](../packages/web/web-search-duckduckgo/src/index.ts)
+
+```ts config-catalog
+/** Plugin config: the endpoint, region, and transport limits (all defaulted). */
+export interface Config {
+  /** HTML results endpoint; an HTTP(S) URL accepting a form-encoded `q`. */
+  endpoint?: string
+  /** DuckDuckGo `kl` region code, such as `wt-wt` (no region) or `kr-kr`. */
+  region?: string
+  /** Per-search timeout in milliseconds, within Node's timer range. */
+  timeoutMs?: number
+  /** Maximum response body size in bytes. */
+  maxResponseBytes?: number
+  /** `User-Agent` header sent on every request. */
+  userAgent?: string
+}
+```
+<!-- END GENERATED config-catalog:@deepseek-ai/dsh-web-search-duckduckgo -->
+
 <!-- BEGIN GENERATED config-catalog:@deepseek-ai/dsh-webhook-github -->
 <a id="deepseek-aidsh-webhook-github"></a>
 

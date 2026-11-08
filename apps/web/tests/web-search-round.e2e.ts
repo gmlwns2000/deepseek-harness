@@ -156,6 +156,8 @@ describe('web e2e: default Search API web search', () => {
     scaffold = await launchWebScaffold({
       extraOverlayPath: fileURLToPath(new URL('./pin-browse-picker.overlay.yml', import.meta.url)),
       compareReplaySession: true,
+      // The recorded round searches through the DeepSeek Search API, which the shared base disables.
+      deepSeekWebProviders: true,
       // Own YAML endpoint settings pin Search to the local endpoint and a dedicated key.
       deepSeekWebApi: {
         baseURL: `${search.baseURL}/api/v1/tools`,

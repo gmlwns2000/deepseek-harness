@@ -38,7 +38,7 @@ Search 与 Fetch 跟随会话的 DeepSeek 凭据，设置页不为它们显示�
 
 ### 默认值与已保存的选择
 
-[base 组合](../../../../packages/bundle/base/cordis.patch.yml)设置 `searchProvider: deepseek-search-api` 和 `fetchProvider: http`。搜索默认使用 Search API，因为它返回来源时无需 Harness 发起辅助模型请求。抓取默认使用本地 HTTP 抓取，因为它没有按次的 API 费用，执行 Harness 自身的 URL 校验和资源限制，并且可以访问内网和本地地址。Fetch API 仍可在下拉框中直接选择。
+[base 组合](../../../../packages/bundle/base/cordis.patch.yml)设置 `searchProvider: duckduckgo` 和 `fetchProvider: http`，并禁用 DeepSeek 网页提供方条目。两项默认值都从本机直接请求目标地址，因此查询、提示词片段与抓取的 URL 都不会经过 DeepSeek 服务；搜索无需 API 密钥、账号或计费，代价是 DuckDuckGo 摘要较短且会限制自动流量。抓取默认使用本地 HTTP 抓取，因为它没有按次的 API 费用，执行 Harness 自身的 URL 校验和资源限制，并且可以访问内网和本地地址。需要 DeepSeek Search 或 Fetch API 的部署需重新启用对应条目并选中它。
 
 已保存的选择——无论位于设置文档还是部署自身的组合中——优先于内置默认值，升级不会改写它。执行时从不替换选择：所选提供方缺失、不可用或失败时，操作以结构化错误失败，不会回退到其他搜索或抓取提供方。回退会把查询和凭据发往用户未选择的端点，并在不提示的情况下改变计费。
 

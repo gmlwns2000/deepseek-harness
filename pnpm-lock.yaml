@@ -2695,6 +2695,9 @@ importers:
       '@deepseek-ai/dsh-web-search-deepseek':
         specifier: workspace:*
         version: link:../../web/web-search-deepseek
+      '@deepseek-ai/dsh-web-search-duckduckgo':
+        specifier: workspace:*
+        version: link:../../web/web-search-duckduckgo
       '@deepseek-ai/dsh-workflow-ptc':
         specifier: workspace:*
         version: link:../../workflow/workflow-ptc
@@ -17877,6 +17880,25 @@ importers:
       '@deepseek-ai/dsh-session':
         specifier: workspace:*
         version: link:../../core/session
+      '@deepseek-ai/dsh-web':
+        specifier: workspace:*
+        version: link:../web
+
+  packages/web/web-search-duckduckgo:
+    dependencies:
+      '@deepseek-ai/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
+      parse5:
+        specifier: 8.0.1
+        version: 8.0.1
+    devDependencies:
+      '@deepseek-ai/cordis':
+        specifier: workspace:~
+        version: link:../../../vendor/cordis
+      '@deepseek-ai/dsh-timeout':
+        specifier: workspace:*
+        version: link:../../util/timeout
       '@deepseek-ai/dsh-web':
         specifier: workspace:*
         version: link:../web
