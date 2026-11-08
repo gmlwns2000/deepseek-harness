@@ -47,7 +47,10 @@ describe('desktop release metadata', () => {
 const coordinators: InstanceType<typeof DesktopUpdateCoordinator>[] = []
 afterEach(() => { for (const item of coordinators.splice(0)) item.dispose() })
 
-function fixture(channel: 'nightly' | 'stable' = 'nightly', version = '1.1.0-alpha.1', discard?: (updater: AppUpdater) => Promise<void>) {
+function fixture(
+  channel: 'nightly' | 'stable' = 'nightly', version = '1.1.0-alpha.1', discard?: (updater: AppUpdater) => Promise<void>,
+  enabled: () => boolean = () => true,
+) {
   const events = new EventEmitter()
   const checkForUpdates = vi.fn(async () => ({
     isUpdateAvailable: true,
@@ -66,7 +69,7 @@ function fixture(channel: 'nightly' | 'stable' = 'nightly', version = '1.1.0-alp
   const updater = Object.assign(events, { checkForUpdates, downloadUpdate, quitAndInstall }) as unknown as AppUpdater
   const coordinator = new DesktopUpdateCoordinator(
     (state) => { states.push(state); return state },
-    beforeRestart, updater, () => true, () => version, downloadResult, channel, discard,
+    beforeRestart, updater, enabled, () => version, downloadResult, channel, discard,
   )
   coordinators.push(coordinator)
   return { coordinator, updater, events, states, checkForUpdates, downloadUpdate, quitAndInstall, beforeRestart, downloadResult }
@@ -174,6 +177,18 @@ describe('desktop update coordinator', () => {
     expect(f.states).toEqual([])
     await Promise.all([f.coordinator.check(), f.coordinator.check(true)])
     expect(f.states).toEqual([expect.objectContaining({ phase: 'error', failedOperation: 'check' })])
+    expect(f.downloadUpdate).not.toHaveBeenCalled()
+  })
+
+  it('reports an unavailable update source without contacting the feed, naming the opt-out', async () => {
+    const f = fixture('nightly', '1.1.0-alpha.1', undefined, () => false)
+    expect(await f.coordinator.check()).toMatchObject({ phase: 'error', failedOperation: 'check' })
+    expect(f.states).toEqual([])
+    const manual = await f.coordinator.check(true)
+    expect(manual).toMatchObject({ phase: 'error', failedOperation: 'check' })
+    expect(manual.message).toContain('DSH_DESKTOP_UPDATES_DISABLED')
+    expect(f.checkForUpdates).not.toHaveBeenCalled()
+    await expect(f.coordinator.download('1.1.0-rc.2')).rejects.toThrow(/no checked update/u)
     expect(f.downloadUpdate).not.toHaveBeenCalled()
   })
 

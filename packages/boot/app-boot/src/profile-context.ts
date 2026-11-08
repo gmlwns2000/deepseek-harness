@@ -27,6 +27,11 @@ export interface ProfileContext {
   readonly overlays: readonly PatchOptions[]
   /** Launch-time DSH_TELEMETRY_DISABLED value; any non-empty value opts out. */
   readonly telemetryDisabledEnv: string | undefined
+  /**
+   * Launch-time DSH_TELEMETRY_ENABLED value; a non-empty value opts in to the upload rows,
+   * which otherwise stay disabled. `telemetryDisabledEnv` still wins.
+   */
+  readonly telemetryEnabledEnv?: string | undefined
 }
 
 declare module '@deepseek-ai/cordis' {
@@ -36,22 +41,35 @@ declare module '@deepseek-ai/cordis' {
   }
 }
 
-const TELEMETRY_ROW_ID = 'session-telemetry-otel'
+/**
+ * Rows that upload Session or usage data: feedback-released Session logs,
+ * Desktop product analytics and its exporter, the Session-log and plugin
+ * inventory fields attached to official DeepSeek requests, and the Settings
+ * row that toggles the Session-log upload.
+ */
+const UPLOAD_ROW_IDS = [
+  'session-telemetry-otel', 'product-analytics', 'desktop-product-telemetry',
+  'session-log-deepseek', 'plugin-package-inventory-deepseek', 'ui-settings-session-log',
+] as const
 
 /**
- * Resolve the telemetry opt-out switch into its boot patch. ANY non-empty
- * value (including `'0'`/`'false'`) disables: a privacy switch prefers
- * off-by-mistake over on-by-mistake. A composition without the telemetry row
- * exports nothing, so the switch is then trivially satisfied and no patch is
- * generated — custom profiles need not mount telemetry to run with the
- * switch set.
- * @param disabledEnv - the raw `DSH_TELEMETRY_DISABLED` value (`undefined` when unset).
- * @param hasRow - whether the composition carries the telemetry row.
- * @returns the disable patch, or `undefined` when no hard-disable patch is required.
+ * Resolve the launch-time upload switches into boot patches. Upload rows stay
+ * disabled unless `DSH_TELEMETRY_ENABLED` opts in, and ANY non-empty
+ * `DSH_TELEMETRY_DISABLED` (including `'0'`/`'false'`) keeps them disabled
+ * even then: a privacy switch prefers off-by-mistake over on-by-mistake. The
+ * patches apply after every profile, home, and overlay patch, so a
+ * configuration file cannot re-enable an upload. Only rows the composition
+ * carries are patched.
+ * @param switches - the raw `DSH_TELEMETRY_DISABLED` and `DSH_TELEMETRY_ENABLED` values (`undefined` when unset).
+ * @param rowIds - ids of every row in the composed profile.
+ * @returns one disable patch per present upload row; empty only for an opted-in launch.
  */
-export function resolveTelemetryPatch(disabledEnv: string | undefined, hasRow: boolean): PatchOptions | undefined {
-  if ((disabledEnv ?? '') === '' || !hasRow) return undefined
-  return { id: TELEMETRY_ROW_ID, disabled: true }
+export function resolveTelemetryPatches(
+  switches: { readonly disabled: string | undefined; readonly enabled: string | undefined },
+  rowIds: ReadonlySet<string>,
+): PatchOptions[] {
+  if ((switches.disabled ?? '') === '' && (switches.enabled ?? '') !== '') return []
+  return UPLOAD_ROW_IDS.filter(id => rowIds.has(id)).map(id => ({ id, disabled: true }))
 }
 
 /** Read the selected bundles' patches, which apply before the profile patch file.
@@ -78,8 +96,7 @@ export function readProfilePatches(binName: string, context: ProfileContext, ini
     ...(loadOptionalPatches(binName, join(context.home, PROFILE_PATCH_FILENAME)) ?? []),
     ...context.overlays,
   ])
-  const telemetryPatch = resolveTelemetryPatch(context.telemetryDisabledEnv,
-    composeEntries([patches]).some(row => row.id === TELEMETRY_ROW_ID))
-  if (telemetryPatch !== undefined) patches.push(telemetryPatch)
+  patches.push(...resolveTelemetryPatches({ disabled: context.telemetryDisabledEnv, enabled: context.telemetryEnabledEnv },
+    new Set(composeEntries([patches]).map(row => row.id))))
   return patches
 }

@@ -40,7 +40,7 @@ import { desktopUpdateReadyConfirmation, formatDesktopMessage, resolveDesktopLoc
 import type { DesktopMessages } from './locale.ts'
 import { claimDesktopSingleInstance } from './single-instance.ts'
 import { desktopUpdateChannel } from './update-channel.ts'
-import { DesktopUpdateCoordinator } from './update-coordinator.ts'
+import { DesktopUpdateCoordinator, hasPackagedUpdateSource } from './update-coordinator.ts'
 import { prepareDesktopUpdateWindow } from './update-window.ts'
 import { DesktopCommandManager } from './command-management.ts'
 import { serveWebDocument, authenticateWebHost, forwardWebRequest, removeLegacyHostCookies } from './web-document.ts'
@@ -53,7 +53,7 @@ import { WELCOME_IPC, needsWelcome, type WelcomeNotice } from './welcome-api.ts'
 import { connectDesktopWelcome, type DesktopWelcomeBackend } from './welcome-backend.ts'
 import { DesktopUpdateJournal } from './update-journal.ts'
 import { DesktopUpdatePreparationError } from './update-error.ts'
-import { DesktopUpdateSchedule, resolveDesktopUpdateScheduleConfig } from './update-schedule.ts'
+import { DesktopUpdateSchedule, desktopUpdatesDisabled, resolveDesktopUpdateScheduleConfig } from './update-schedule.ts'
 import { desktopUpdateErrorSummary, presentDesktopUpdate } from './update-presentation.ts'
 import { desktopErrorState } from './startup-error.ts'
 import { readDesktopLoginShellEnvironment, resolveDesktopLoginShellConfig } from './login-shell-environment.ts'
@@ -693,6 +693,8 @@ async function main(): Promise<void> {
     packagedChannel, changing: false,
     ...(initialChannel.kind === 'error' ? { error: configurationFailure(initialChannel.error) } : {}) }
   const updateChannel = initialChannel.kind === 'ready' ? initialChannel.channel : packagedChannel
+  // Read once: the opt-out holds for the whole process, including manual checks and policy queries.
+  const updatesDisabled = desktopUpdatesDisabled(process.env)
   const updates = new DesktopUpdateCoordinator(
     publishUpdate,
     async () => {
@@ -748,7 +750,7 @@ async function main(): Promise<void> {
       }
       return true
     },
-    undefined, undefined, undefined,
+    undefined, () => !updatesDisabled && hasPackagedUpdateSource(), undefined,
     (success, reason) => { void track('desktop_upgrade_download_result', { is_success: success, ...reason === undefined ? {} : { error_reason: reason } }) },
     updateChannel,
   )
@@ -1523,7 +1525,7 @@ async function main(): Promise<void> {
     ? ('dshMandatoryUpdatePolicy' in manifest ? manifest.dshMandatoryUpdatePolicy : undefined)
     : developmentPolicy === undefined ? undefined : JSON.parse(developmentPolicy) as unknown
   const policyConfig = resolveDesktopPolicyConfig(policyInput, !app.isPackaged)
-  if (policyConfig !== undefined) {
+  if (policyConfig !== undefined && !updatesDisabled) {
     if (policyConfig.authentication === 'feishu-test') {
       policyAuth = new DesktopPolicyTestAuth(policyConfig.origin, policyConfig.allowedAuthOrigins, locale,
         () => mandatoryUI?.confirmationWindow ?? currentDialogWindow(),

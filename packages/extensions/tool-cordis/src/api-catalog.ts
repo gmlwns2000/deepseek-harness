@@ -2462,6 +2462,11 @@ export const SERVICE_API: readonly ServiceApiEntry[] = [
         description: 'Launch-time DSH_TELEMETRY_DISABLED value; any non-empty value opts out.',
         parameters: [],
       },
+      {
+        signature: 'readonly telemetryEnabledEnv?: string | undefined',
+        description: 'Launch-time DSH_TELEMETRY_ENABLED value; a non-empty value opts in to the upload rows, which otherwise stay disabled. `telemetryDisabledEnv` still wins.',
+        parameters: [],
+      },
     ],
   },
   {

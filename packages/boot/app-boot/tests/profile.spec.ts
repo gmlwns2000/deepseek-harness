@@ -212,7 +212,9 @@ it('composes current files from profile data and retains launch overlay and tele
     overlays: [{ id: 'session-telemetry-otel', disabled: false }], telemetryDisabledEnv: 'false',
   }
   expect(composeEntries([readProfilePatches('test', context)])[0]?.disabled).toBe(true)
-  const enabled = { ...context, telemetryDisabledEnv: undefined }
+  // Without an opt-in, the launcher keeps the upload row disabled over the overlay that enables it.
+  expect(composeEntries([readProfilePatches('test', { ...context, telemetryDisabledEnv: undefined })])[0]?.disabled).toBe(true)
+  const enabled = { ...context, telemetryDisabledEnv: undefined, telemetryEnabledEnv: '1' }
   expect(composeEntries([readProfilePatches('test', enabled)])[0]?.disabled).toBe(false)
   const patches = readProfilePatches('test', enabled)
   patches.at(-1)!.disabled = true

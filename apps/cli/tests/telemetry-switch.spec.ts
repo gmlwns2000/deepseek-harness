@@ -1,22 +1,33 @@
 import { describe, expect, it } from 'vitest'
-import { resolveTelemetryPatch } from '@deepseek-ai/dsh-app-boot'
+import { resolveTelemetryPatches } from '@deepseek-ai/dsh-app-boot'
 
-describe('resolveTelemetryPatch', () => {
-  it('preserves the configured telemetry mode when the hard-disable switch is unset or empty', () => {
-    expect(resolveTelemetryPatch(undefined, true)).toBeUndefined()
-    expect(resolveTelemetryPatch('', true)).toBeUndefined()
+const UPLOAD_ROWS = [
+  'session-telemetry-otel', 'product-analytics', 'desktop-product-telemetry',
+  'session-log-deepseek', 'plugin-package-inventory-deepseek', 'ui-settings-session-log',
+]
+const PROFILE_ROWS = new Set([...UPLOAD_ROWS, 'webserver', 'llm-deepseek'])
+const ALL_DISABLED = UPLOAD_ROWS.map(id => ({ id, disabled: true }))
+
+describe('resolveTelemetryPatches', () => {
+  it('keeps every upload row disabled when neither switch is set', () => {
+    expect(resolveTelemetryPatches({ disabled: undefined, enabled: undefined }, PROFILE_ROWS)).toEqual(ALL_DISABLED)
+    expect(resolveTelemetryPatches({ disabled: '', enabled: '' }, PROFILE_ROWS)).toEqual(ALL_DISABLED)
   })
 
-  it('disables on ANY non-empty value, including falsy-looking ones', () => {
+  it('leaves the upload rows to the profile only for an explicit opt-in', () => {
+    expect(resolveTelemetryPatches({ disabled: undefined, enabled: '1' }, PROFILE_ROWS)).toEqual([])
+    expect(resolveTelemetryPatches({ disabled: '', enabled: 'yes' }, PROFILE_ROWS)).toEqual([])
+  })
+
+  it('lets ANY non-empty DSH_TELEMETRY_DISABLED, including falsy-looking ones, override the opt-in', () => {
     for (const value of ['1', '0', 'false', 'no']) {
-      expect(resolveTelemetryPatch(value, true)).toEqual({ id: 'session-telemetry-otel', disabled: true })
+      expect(resolveTelemetryPatches({ disabled: value, enabled: '1' }, PROFILE_ROWS)).toEqual(ALL_DISABLED)
     }
   })
 
-  it('is trivially satisfied by a composition without the telemetry row', () => {
-    // A custom profile need not mount telemetry: nothing exports, so the
-    // privacy switch has nothing to disable and generates no patch.
-    expect(resolveTelemetryPatch('1', false)).toBeUndefined()
-    expect(resolveTelemetryPatch(undefined, false)).toBeUndefined()
+  it('patches only the upload rows the composition carries', () => {
+    expect(resolveTelemetryPatches({ disabled: undefined, enabled: undefined }, new Set(['webserver']))).toEqual([])
+    expect(resolveTelemetryPatches({ disabled: '1', enabled: undefined }, new Set(['session-telemetry-otel'])))
+      .toEqual([{ id: 'session-telemetry-otel', disabled: true }])
   })
 })

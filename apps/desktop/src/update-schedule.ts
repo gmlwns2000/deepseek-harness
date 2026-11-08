@@ -12,6 +12,16 @@ export interface DesktopUpdateScheduleConfig {
 }
 
 /**
+ * Read the administrator opt-out for every Desktop update request. ANY non-empty
+ * value disables, so a mistaken value keeps the network quiet rather than active.
+ * @param env - Electron main-process environment.
+ * @returns whether ordinary feed checks and mandatory-update policy queries are off.
+ */
+export function desktopUpdatesDisabled(env: NodeJS.ProcessEnv): boolean {
+  return (env.DSH_DESKTOP_UPDATES_DISABLED ?? '') !== ''
+}
+
+/**
  * Resolve ordinary-update polling settings without changing mandatory-policy scheduling.
  * @param env - Desktop process environment.
  * @returns Validated durations and fractional jitter.

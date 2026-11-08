@@ -33,6 +33,8 @@
 
 # `dsh.client` rows are the browser roster the modules node half scans into
 # window.__DSH_BOOT__; the modules row is simultaneously a host row.
+# The launcher patches both Desktop analytics rows below disabled unless the
+# launching environment sets DSH_TELEMETRY_ENABLED (see app-boot upload rows).
 - insert:
     - id: desktop-product-telemetry
       name: '@deepseek-ai/dsh-host-product-telemetry-otel'
