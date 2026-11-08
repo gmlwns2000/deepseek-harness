@@ -2,6 +2,7 @@
 
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
 import { rm } from 'node:fs/promises'
+import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
@@ -14,6 +15,7 @@ const state = vi.hoisted(() => ({
   preparePrimary: vi.fn(),
   extractElectron: vi.fn(),
   commandLink: vi.fn(),
+  downloadElectron: vi.fn(async (_details: { checksums?: Record<string, string> }) => 'electron.zip'),
 }))
 vi.mock('../scripts/desktop-build-paths.mjs', async importOriginal => ({
   ...await importOriginal<typeof import('../scripts/desktop-build-paths.mjs')>(),
@@ -22,7 +24,7 @@ vi.mock('../scripts/desktop-build-paths.mjs', async importOriginal => ({
     runtime: join(state.root, 'runtime'), electron: join(state.root, 'electron'), downloads: join(state.root, 'downloads'),
   }),
 }))
-vi.mock('@electron/get', () => ({ downloadArtifact: async () => 'electron.zip' }))
+vi.mock('@electron/get', () => ({ downloadArtifact: state.downloadElectron }))
 vi.mock('extract-zip', () => ({ default: state.extractElectron }))
 vi.mock('node:child_process', async importOriginal => ({
   ...await importOriginal<typeof import('node:child_process')>(),
@@ -93,6 +95,10 @@ it.each(['mac-arm64', 'mac-x64', 'win-x64'] as const)('prepares %s with one pnpm
     schemaVersion: 1, node: '24.18.1', pnpm: '11.7.0',
   })
   expect(state.preparePrimary).toHaveBeenCalledWith({ deferSmoke: windows })
+  // Electron is verified against the checksums the locked electron package ships, not a downloaded SHASUMS256.txt.
+  const pinned = createRequire(import.meta.url)('electron/checksums.json') as Record<string, string>
+  expect(state.downloadElectron).toHaveBeenCalledOnce()
+  expect(state.downloadElectron.mock.calls[0]![0].checksums).toEqual(pinned)
   if (windows) expect(state.commandLink).not.toHaveBeenCalled()
   else expect(state.commandLink).toHaveBeenCalledWith(join(runtime, 'cli'), target === 'mac-arm64' ? 'arm64' : 'x64', '12.0')
 })
