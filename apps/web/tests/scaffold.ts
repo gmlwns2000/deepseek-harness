@@ -416,6 +416,11 @@ export interface LaunchOptions {
     /** Credential reference of both sections. */
     apiKeyEnv: string
   }
+  /**
+   * Enable the DeepSeek web providers the shared base disables and select the
+   * DeepSeek Search API, for scenarios that exercise those providers.
+   */
+  deepSeekWebProviders?: boolean
   /** Preset selection default and additional declarative definitions for this scenario. */
   agentPresets?: {
     default: string
@@ -686,6 +691,11 @@ export async function launchWebScaffold(options: LaunchOptions = {}): Promise<We
       { id: 'agent-preset-registry', config: { default: options.agentPresets.default } },
       { insert: (options.agentPresets.definitions ?? []).map(config => ({ id: `preset-${config.id}`, name: '@deepseek-ai/dsh-agent-preset', config })) },
     ],
+    ...options.deepSeekWebProviders === true ? [
+      { id: 'web-search-deepseek', disabled: false },
+      { id: 'web-deepseek-api', disabled: false },
+      { id: 'web', config: { searchProvider: 'deepseek-search-api', fetchProvider: 'http' } },
+    ] : [],
     ...options.deepSeekWebApi === undefined ? [] : [
       {
         id: 'web-deepseek-api',

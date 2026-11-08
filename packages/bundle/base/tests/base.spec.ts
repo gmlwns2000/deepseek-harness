@@ -41,11 +41,17 @@ describe('dsh-base bundle', () => {
     })
     expect(rows.filter(row => row.id === 'subagent-codex')).toHaveLength(0)
     expect(rows.filter(row => row.id === 'subagent-claude-code')).toHaveLength(0)
-    expect(rows.find(row => row.id === 'web')?.config).toEqual({ searchProvider: 'deepseek-search-api', fetchProvider: 'http' })
-    expect(rows.find(row => row.id === 'web-deepseek-api')).toEqual({ id: 'web-deepseek-api', name: '@deepseek-ai/dsh-web-deepseek-api' })
-    expect(rows.find(row => row.id === 'web-fetch-http')).toBeDefined()
+    // Web search and fetch go directly to their destinations; the DeepSeek web providers stay disabled.
+    expect(rows.find(row => row.id === 'web')?.config).toEqual({ searchProvider: 'duckduckgo', fetchProvider: 'http' })
+    expect(rows.find(row => row.id === 'web-search-duckduckgo')).toEqual({
+      id: 'web-search-duckduckgo', name: '@deepseek-ai/dsh-web-search-duckduckgo',
+    })
+    expect(rows.find(row => row.id === 'web-deepseek-api')).toEqual({
+      id: 'web-deepseek-api', name: '@deepseek-ai/dsh-web-deepseek-api', disabled: true,
+    })
+    expect(rows.find(row => row.id === 'web-fetch-http')?.disabled).toBeUndefined()
     expect(rows.find(row => row.id === 'web-search-deepseek')).toMatchObject({
-      name: '@deepseek-ai/dsh-web-search-deepseek', config: { apiKeyEnv: 'DEEPSEEK_API_KEY' },
+      name: '@deepseek-ai/dsh-web-search-deepseek', disabled: true, config: { apiKeyEnv: 'DEEPSEEK_API_KEY' },
     })
     expect(rows.find(row => row.id === 'tool-web')?.config).toMatchObject({ fetch: true })
     expect(manifest.dependencies).not.toHaveProperty('@deepseek-ai/dsh-subagent-codex')
@@ -53,6 +59,7 @@ describe('dsh-base bundle', () => {
     expect(manifest.dependencies).toHaveProperty('@deepseek-ai/dsh-web-fetch-http')
     expect(manifest.dependencies).toHaveProperty('@deepseek-ai/dsh-web-deepseek-api')
     expect(manifest.dependencies).toHaveProperty('@deepseek-ai/dsh-web-search-deepseek')
+    expect(manifest.dependencies).toHaveProperty('@deepseek-ai/dsh-web-search-duckduckgo')
   })
 
   it('gates each shell stack by platform with a symmetric disabled expression', () => {

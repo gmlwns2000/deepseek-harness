@@ -1,0 +1,16 @@
+# Bilingual-pair consistency record for guide.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write docs/upgrade-guide/v0.2.2-rc.1/web-search-duckduckgo-default/guide.md
+/:
+  en: 0d5bbf40a843f594
+  zh: e174f212c2530b3e
+/search-defaults-to-duckduckgo-the-deepseek-web-providers-are-disabled:
+  en: 069607362a7c39b0
+  zh: b060dff4a885798c
+/search-defaults-to-duckduckgo-the-deepseek-web-providers-are-disabled/change:
+  en: 41e84412e76e9435
+  zh: 97d3676377686d10
+/search-defaults-to-duckduckgo-the-deepseek-web-providers-are-disabled/migration:
+  en: ce89cae53b9c839f
+  zh: df1eda97f3516ba3

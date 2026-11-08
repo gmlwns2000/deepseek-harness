@@ -1,0 +1,52 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/web/web-search-duckduckgo/README.md
+/:
+  en: fd4289ae9b11dc0c
+  zh: 86fc1809741f9e15
+/deepseek-ai-dsh-web-search-duckduckgo:
+  en: 3d2fe83bc9c479f1
+  zh: b1785928e5e38b3e
+/deepseek-ai-dsh-web-search-duckduckgo/summary:
+  en: f9e0be105a7f663e
+  zh: 58fa86fced0e4e29
+/deepseek-ai-dsh-web-search-duckduckgo/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/deepseek-ai-dsh-web-search-duckduckgo/use-this-package:
+  en: 0c9f593af5753644
+  zh: f264a77f02a841a6
+/deepseek-ai-dsh-web-search-duckduckgo/use-this-package/when-to-choose-it:
+  en: 7b525588832206d0
+  zh: 5b54114a72b4926f
+/deepseek-ai-dsh-web-search-duckduckgo/use-this-package/minimal-configuration:
+  en: d904adf648584dca
+  zh: e26c63695b029343
+/deepseek-ai-dsh-web-search-duckduckgo/use-this-package/what-a-search-returns:
+  en: f01e24391da5ef76
+  zh: 8cc3392de970621e
+/deepseek-ai-dsh-web-search-duckduckgo/use-this-package/failures-and-recovery:
+  en: 4d42f0953f8f3729
+  zh: be0b2933608221f5
+/deepseek-ai-dsh-web-search-duckduckgo/understand-the-implementation:
+  en: bfbb11dd2306d8c8
+  zh: 3937099fa4d8cb0d
+/deepseek-ai-dsh-web-search-duckduckgo/understand-the-implementation/source-map:
+  en: 6b31998b308df989
+  zh: 5b1bf9ae656a43c8
+/deepseek-ai-dsh-web-search-duckduckgo/further-exploration:
+  en: ec1059398c8574d4
+  zh: ae645f4b72e8f65a
+/deepseek-ai-dsh-web-search-duckduckgo/model-experience:
+  en: fd0e8e1e01cd51d2
+  zh: 8ada958f02f37315
+/deepseek-ai-dsh-web-search-duckduckgo/model-experience/kv-cache-effect:
+  en: 40294c1c31b74824
+  zh: 5180853e10e8f8fa
+/deepseek-ai-dsh-web-search-duckduckgo/known-limitations-and-deferred-work:
+  en: f55e696fadfe9565
+  zh: 2f7caae31a424a6e
+/deepseek-ai-dsh-web-search-duckduckgo/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 9c6918ce849f6c93
